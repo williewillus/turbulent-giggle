@@ -27,36 +27,38 @@ public enum TetrisBlock {
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
             switch (rotation) {
-                case ZERO: {
-                    return points.add(new Point(0, 0))
+                case ZERO:
+                    points = points.add(new Point(0, 0))
                             .add(new Point(0, 1))
                             .add(new Point(0, 2))
                             .add(new Point(0, 3))
-                            .add(new Point(0, 4)).build();
-                }
+                            .add(new Point(0, 4));
+                    break;
                 case NINETY: {
-                    return points.add(new Point(0, 0))
+                    points = points.add(new Point(0, 0))
                             .add(new Point(1, 0))
                             .add(new Point(2, 0))
                             .add(new Point(3, 0))
-                            .add(new Point(4, 0)).build();
+                            .add(new Point(4, 0));
+                    break;
                 }
                 case ONE_EIGHTY: {
-                    return points.add(new Point(0, 0))
+                    points = points.add(new Point(0, 0))
                             .add(new Point(0, -1))
                             .add(new Point(0, -2))
                             .add(new Point(0, -3))
-                            .add(new Point(0, -4)).build();
+                            .add(new Point(0, -4));
+                    break;
                 }
                 case TWO_SEVENTY: {
-                    return points.add(new Point(0, 0))
+                    points = points.add(new Point(0, 0))
                             .add(new Point(-1, 0))
                             .add(new Point(-2, 0))
                             .add(new Point(-3, 0))
-                            .add(new Point(-4, 0)).build();
+                            .add(new Point(-4, 0));
                 }
-                default: return points.build();
             }
+            return points.build();
         }
     },
     S(Color.GREEN) {
