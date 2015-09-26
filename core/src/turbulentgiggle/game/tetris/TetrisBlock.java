@@ -66,7 +66,7 @@ public enum TetrisBlock {
             return points.build();
         }
     },
-    L(Color.ORANGE) {
+    J(Color.ORANGE) {
         @Override
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
@@ -76,7 +76,7 @@ public enum TetrisBlock {
             return points.build();
         }
     },
-    J(Color.BLUE) {
+    L(Color.BLUE) {
         @Override
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
