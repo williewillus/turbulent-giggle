@@ -1,10 +1,7 @@
 package turbulentgiggle.game;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import turbulentgiggle.game.utils.ResourceLoader;
-
-import javax.annotation.Resource;
 
 public class MyGdxGame extends Game {
 
