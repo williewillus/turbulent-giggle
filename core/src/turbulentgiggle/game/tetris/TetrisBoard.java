@@ -45,6 +45,7 @@ public class TetrisBoard {
 
     public void addPiece(List<Point> points, Color color) {
         for(Point point : points) {
+
             setPosition(point, color);
         }
     }
