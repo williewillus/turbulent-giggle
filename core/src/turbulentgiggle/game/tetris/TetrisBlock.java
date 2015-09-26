@@ -1,5 +1,6 @@
 package turbulentgiggle.game.tetris;
 
+import com.badlogic.gdx.graphics.Color;
 import com.google.common.collect.ImmutableList;
 import org.lwjgl.util.Point;
 import turbulentgiggle.game.utils.CardinalRotation;
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Quang on 9/26/2015.
  */
 public enum TetrisBlock {
-    O {
+    O(Color.YELLOW) {
         @Override
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             return ImmutableList.of(
@@ -21,7 +22,7 @@ public enum TetrisBlock {
             );
         }
     },
-    I {
+    I(Color.CYAN) {
         @Override
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
@@ -40,12 +41,12 @@ public enum TetrisBlock {
                             .add(new Point(3, 0))
                             .add(new Point(4, 0)).build();
                 }
-                case 
+                case
             }
             return points.build();
         }
     },
-    S {
+    S(Color.GREEN) {
         @Override
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
@@ -55,7 +56,7 @@ public enum TetrisBlock {
             return points.build();
         }
     },
-    Z {
+    Z(Color.RED) {
         @Override
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
@@ -65,7 +66,7 @@ public enum TetrisBlock {
             return points.build();
         }
     },
-    L {
+    L(Color.ORANGE) {
         @Override
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
@@ -75,7 +76,7 @@ public enum TetrisBlock {
             return points.build();
         }
     },
-    J {
+    J(Color.BLUE) {
         @Override
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
@@ -85,7 +86,7 @@ public enum TetrisBlock {
             return points.build();
         }
     },
-    T {
+    T(Color.MAGENTA) {
         @Override
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
@@ -122,12 +123,14 @@ public enum TetrisBlock {
     public final List<Point> ninetyDegreeState;
     public final List<Point> oneEightyDegreeState;
     public final List<Point> twoSeventyDegreeState;
+    public final Color color;
 
-    TetrisBlock() {
+    TetrisBlock(Color color) {
         defaultState = getDefaultState(CardinalRotation.ZERO);
         ninetyDegreeState = getDefaultState(CardinalRotation.NINETY);
         oneEightyDegreeState = getDefaultState(CardinalRotation.ONE_EIGHTY);
         twoSeventyDegreeState = getDefaultState(CardinalRotation.TWO_SEVENTY);
+        this.color = color;
     }
 
     protected abstract List<Point> getDefaultState(CardinalRotation rotation);
