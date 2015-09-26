@@ -19,7 +19,7 @@ public class TetrisBoard {
 
     public boolean isValid(List<Point> solid) {
         for(Point point : solid) {
-            if(board[point.x][point.y] != null) {
+            if(board[point.getX()][point.getY()] != null) {
                 return false;
             }
         }
