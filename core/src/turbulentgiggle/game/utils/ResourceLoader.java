@@ -16,20 +16,20 @@ public class ResourceLoader {
     private static BitmapFont font16, font24;
 
     public static void load() {
-//        loadTextures();
+        loadTextures();
 //        loadFonts();
 //        loadSounds();
     }
 
     private static void loadTextures() {
         game = new TextureAtlas(Gdx.files.internal("assets/textures/game.atlas"));
-        gui = new TextureAtlas(Gdx.files.internal("assets/textures/gui.atlas"));
-        skin = new Skin(Gdx.files.internal("assets/textures/skin.json"), gui);
+//        gui = new TextureAtlas(Gdx.files.internal("assets/textures/gui.atlas"));
+//        skin = new Skin(Gdx.files.internal("assets/textures/skin.json"), gui);
     }
 
     private static void loadFonts() {
-        font16 = new BitmapFont(Gdx.files.internal("assets/fonts/font16.fnt"));
-        font24 = new BitmapFont(Gdx.files.internal("assets/fonts/font24.fnt"));
+//        font16 = new BitmapFont(Gdx.files.internal("assets/fonts/font16.fnt"));
+//        font24 = new BitmapFont(Gdx.files.internal("assets/fonts/font24.fnt"));
     }
 
     private static void loadSounds() {

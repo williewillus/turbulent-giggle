@@ -1,33 +1,30 @@
-package turbulentgiggle.game;
+package turbulentgiggle.game.tetris;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import turbulentgiggle.game.utils.ResourceLoader;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import turbulentgiggle.game.CScreen;
 
 /**
  * Created by Quang on 9/26/2015.
  */
-public class MenuScreen extends CScreen {
+public class TetrisScreen extends CScreen {
 
-
-    public MenuScreen(Game game) {
+    public TetrisScreen(Game game) {
         super(game);
     }
 
     @Override
     public void show() {
-        Gdx.gl.glClearColor(1f,1f,1f,1f);
+        Gdx.gl.glClearColor(0f,0f,0f,1f);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 
-        batch.end();
+        shapeRenderer.end();
     }
 
     @Override
