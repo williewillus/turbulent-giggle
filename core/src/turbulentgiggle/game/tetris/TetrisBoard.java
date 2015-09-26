@@ -15,6 +15,7 @@ public class TetrisBoard {
     private int xOffset, yOffset;
     private static final int BLOCK_SIZE = 32;
     private TetrisBlock currentBlock;
+    private int rotation = 0;
 
     public int getCurrentBlockXOffset() {
         return currentBlockXOffset;
@@ -56,6 +57,16 @@ public class TetrisBoard {
                 }
             }
         }
+    }
+
+    public void rotateCurrentBlockClockwise()
+    {
+        rotation = (rotation + 90 + 360) % 360;
+    }
+
+    public void rotateCurrentBlockCounterclockwise()
+    {
+        rotation = (rotation - 90 + 360) % 360;
     }
 
     public void addPiece(List<Point> points, Color color) {
