@@ -41,9 +41,22 @@ public enum TetrisBlock {
                             .add(new Point(3, 0))
                             .add(new Point(4, 0)).build();
                 }
-                case
+                case ONE_EIGHTY: {
+                    return points.add(new Point(0, 0))
+                            .add(new Point(0, -1))
+                            .add(new Point(0, -2))
+                            .add(new Point(0, -3))
+                            .add(new Point(0, -4)).build();
+                }
+                case TWO_SEVENTY: {
+                    return points.add(new Point(0, 0))
+                            .add(new Point(-1, 0))
+                            .add(new Point(-2, 0))
+                            .add(new Point(-3, 0))
+                            .add(new Point(-4, 0)).build();
+                }
+                default: return points.build();
             }
-            return points.build();
         }
     },
     S(Color.GREEN) {
@@ -51,7 +64,18 @@ public enum TetrisBlock {
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
             switch (rotation) {
-
+                case ZERO: {
+                    return points.add(new Point(0, 0))
+                            .add(new Point(1, 0))
+                            .add(new Point(1, 1))
+                            .add(new Point(2, 2)).build();
+                }
+                case NINETY: {
+                    return points.add(new Point(0, 0))
+                            .add(new Point(0, -1))
+                            .add(new Point(1, -1))
+                            .add(new Point(1, -2)).build();
+                }
             }
             return points.build();
         }
