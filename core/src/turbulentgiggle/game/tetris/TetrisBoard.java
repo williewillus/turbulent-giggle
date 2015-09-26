@@ -14,6 +14,17 @@ public class TetrisBoard {
     private Color[][] board;
     private int xOffset, yOffset;
     private static final int BLOCK_SIZE = 32;
+    private TetrisBlock currentBlock;
+
+    public int getCurrentBlockXOffset() {
+        return currentBlockXOffset;
+    }
+
+    public void setCurrentBlockXOffset(int currentBlockXOffset) {
+        this.currentBlockXOffset = currentBlockXOffset;
+    }
+
+    private int currentBlockXOffset, currentBlockYOffset;
 
     public TetrisBoard(int xOffset, int yOffset, int width, int height) {
         board = new Color[width][height];
@@ -21,6 +32,10 @@ public class TetrisBoard {
         this.yOffset = yOffset;
     }
 
+    public void setCurrentBlock(TetrisBlock block)
+    {
+        currentBlock = block;
+    }
     public boolean isValid(List<Point> solid) {
         for(Point point : solid) {
             if(board[point.getX()][point.getY()] != null) {
@@ -45,7 +60,6 @@ public class TetrisBoard {
 
     public void addPiece(List<Point> points, Color color) {
         for(Point point : points) {
-
             setPosition(point, color);
         }
     }
