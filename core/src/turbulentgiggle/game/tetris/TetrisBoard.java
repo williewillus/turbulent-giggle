@@ -12,9 +12,12 @@ import java.util.List;
 public class TetrisBoard {
 
     private Color[][] board;
+    private int xOffset, yOffset;
 
-    public TetrisBoard(int width, int height) {
+    public TetrisBoard(int xOffset, int yOffset, int width, int height) {
         board = new Color[width][height];
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
     }
 
     public boolean isValid(List<Point> solid) {
@@ -31,10 +34,20 @@ public class TetrisBoard {
             for(int y = 0; y < board[x].length; y++) {
                 if(board[x][y] != null) {
                     shapeRenderer.setColor(board[x][y]);
-                    shapeRenderer.rect(x * 32 + 2, y * 32 + 2, 28, 28);
+                    shapeRenderer.rect(xOffset + x * 32 + 2, yOffset + y * 32 + 2, 28, 28);
                 }
             }
         }
+    }
+
+    public void addPiece(List<Point> points, Color color) {
+        for(Point point : points) {
+            setPosition(point, color);
+        }
+    }
+
+    public void setPosition(Point point, Color color) {
+        board[point.getX()][point.getY()] = color;
     }
 
 }
