@@ -3,6 +3,7 @@ package turbulentgiggle.game.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
@@ -33,6 +34,10 @@ public class ResourceLoader {
 
     private static void loadSounds() {
 
+    }
+
+    public static TextureRegion getTexture(String textureName) {
+        return game.findRegion(textureName);
     }
 
     public static void dispose() {

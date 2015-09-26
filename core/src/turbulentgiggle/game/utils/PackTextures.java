@@ -13,7 +13,8 @@ public class PackTextures {
         Settings settings = new Settings();
         settings.filterMag = Texture.TextureFilter.Linear;
         settings.filterMin = Texture.TextureFilter.Linear;
-        TexturePacker.process(settings, "game_textures/", "res/textures/", "game");
+        TexturePacker.process(settings, "game_textures/", "assets/textures/", "game");
+        TexturePacker.process(settings, "gui_textures/", "assets/textures/", "gui");
     }
 
 }
