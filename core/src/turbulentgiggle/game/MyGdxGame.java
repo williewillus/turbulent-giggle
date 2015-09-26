@@ -10,7 +10,7 @@ public class MyGdxGame extends Game {
 
 	@Override
 	public void create () {
-//		ResourceLoader.load();
+		ResourceLoader.load();
         menuScreen = new MenuScreen(this);
         gameScreen = new GameScreen(this);
         tetrisScreen = new TetrisScreen(this);
@@ -19,6 +19,6 @@ public class MyGdxGame extends Game {
 
     @Override
     public void dispose() {
-//        ResourceLoader.dispose();
+        ResourceLoader.dispose();
     }
 }

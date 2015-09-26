@@ -13,6 +13,7 @@ public class TetrisBoard {
 
     private Color[][] board;
     private int xOffset, yOffset;
+    private static final int BLOCK_SIZE = 32;
 
     public TetrisBoard(int xOffset, int yOffset, int width, int height) {
         board = new Color[width][height];
@@ -30,6 +31,8 @@ public class TetrisBoard {
     }
 
     public void render(ShapeRenderer shapeRenderer) {
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board.length, BLOCK_SIZE * board[0].length - 1);
         for(int x = 0; x < board.length; x++) {
             for(int y = 0; y < board[x].length; y++) {
                 if(board[x][y] != null) {

@@ -13,21 +13,22 @@ public class ResourceLoader {
 
     private static TextureAtlas game, gui;
     private static Skin skin;
-    private static BitmapFont font16, font24;
+    private static BitmapFont font;//font16, font24;
 
     public static void load() {
-        loadTextures();
-//        loadFonts();
+//        loadTextures();
+        loadFonts();
 //        loadSounds();
     }
 
     private static void loadTextures() {
-        game = new TextureAtlas(Gdx.files.internal("assets/textures/game.atlas"));
+//        game = new TextureAtlas(Gdx.files.internal("assets/textures/game.atlas"));
 //        gui = new TextureAtlas(Gdx.files.internal("assets/textures/gui.atlas"));
 //        skin = new Skin(Gdx.files.internal("assets/textures/skin.json"), gui);
     }
 
     private static void loadFonts() {
+        font = new BitmapFont(Gdx.files.internal("assets/fonts/visitor32.fnt"));
 //        font16 = new BitmapFont(Gdx.files.internal("assets/fonts/font16.fnt"));
 //        font24 = new BitmapFont(Gdx.files.internal("assets/fonts/font24.fnt"));
     }
@@ -39,12 +40,13 @@ public class ResourceLoader {
     public static TextureRegion getTexture(String textureName) {
         return game.findRegion(textureName);
     }
+    public static BitmapFont getFont() { return font; }
+
 
     public static void dispose() {
-        game.dispose();
-        gui.dispose();
-        skin.dispose();
-        font16.dispose();
-        font24.dispose();
+//        game.dispose();
+//        gui.dispose();
+//        skin.dispose();
+        font.dispose();
     }
 }
