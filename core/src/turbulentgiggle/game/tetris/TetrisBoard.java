@@ -69,11 +69,6 @@ public class TetrisBoard {
         this.yOffset = yOffset;
     }
 
-    public void setCurrentBlock(TetrisBlock block)
-    {
-        currentPiece = block.getPiece();
-        pieceLocation = new Point(board[0].length/2, 0);
-    }
     public boolean isValid() {
         for(Point point : currentPiece.getPoints())
         {
