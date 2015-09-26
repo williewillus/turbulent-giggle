@@ -1,18 +1,20 @@
 package turbulentgiggle.game;
 
 import com.badlogic.gdx.Game;
+import turbulentgiggle.game.tetris.TetrisScreen;
 import turbulentgiggle.game.utils.ResourceLoader;
 
 public class MyGdxGame extends Game {
 
-    private CScreen menuScreen, gameScreen;
+    private CScreen menuScreen, gameScreen, tetrisScreen;
 
 	@Override
 	public void create () {
 		ResourceLoader.load();
         menuScreen = new MenuScreen(this);
         gameScreen = new GameScreen(this);
-        setScreen(menuScreen);
+        tetrisScreen = new TetrisScreen(this);
+        setScreen(tetrisScreen);
 	}
 
     @Override
