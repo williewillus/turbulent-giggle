@@ -90,7 +90,29 @@ public enum TetrisBlock {
         protected List<Point> getDefaultState(CardinalRotation rotation) {
             ImmutableList.Builder<Point> points = ImmutableList.builder();
             switch (rotation) {
-
+                case ZERO:
+                    points = points.add(new Point(0, 0))
+                                .add(new Point(1, 0))
+                                .add(new Point(2, 0))
+                                .add(new Point(1, 1));
+                    break;
+                case NINETY:
+                    points = points.add(new Point(1, 1))
+                                .add(new Point(2, 0))
+                                .add(new Point(2, 1))
+                                .add(new Point(2, 2));
+                case ONE_EIGHTY:
+                    points =  points.add(new Point(1, 1))
+                                .add(new Point(0, 2))
+                                .add(new Point(1, 2))
+                                .add(new Point(2, 2));
+                    break;
+                case TWO_SEVENTY:
+                    points = points.add(new Point(1, 1))
+                                .add(new Point(0, 0))
+                                .add(new Point(0, 1))
+                                .add(new Point(0, 2));
+                    break;
             }
             return points.build();
         }
