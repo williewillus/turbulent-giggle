@@ -1,18 +1,23 @@
 package turbulentgiggle.game.tetris;
 
+import com.badlogic.gdx.math.Vector2;
+import com.google.common.collect.ImmutableList;
+
 /**
  * Created by Quang on 9/26/2015.
  */
-public class TetrisBlock {
+public enum TetrisBlock {
+    O,
+    I,
+    S,
+    Z,
+    L,
+    J,
+    T;
 
-    public static int O = 0;
-    public static int I = 1;
-    public static int S = 2;
-    public static int Z = 3;
-    public static int L = 4;
-    public static int J = 5;
-    public static int T = 6;
+    final ImmutableList<Vector2> defaultState;
 
-
-
+    TetrisBlock(Vector2... positions) {
+        defaultState = ImmutableList.copyOf(positions);
+    }
 }
