@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import org.lwjgl.util.Point;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,45 +15,80 @@ public class TetrisBoard {
     private Color[][] board;
     private int xOffset, yOffset;
     private static final int BLOCK_SIZE = 32;
-    private TetrisBlock currentBlock;
-    private int rotation = 0;
-
-    public int getCurrentBlockXOffset() {
-        return currentBlockXOffset;
-    }
-
-    public void setCurrentBlockXOffset(int currentBlockXOffset) {
-        this.currentBlockXOffset = currentBlockXOffset;
-    }
-
-    private int currentBlockXOffset, currentBlockYOffset;
+    private Piece currentPiece;
+    private HashMap<String, Piece> pieceDefinitions = new HashMap<String, Piece>()
+        {{
+            put("O", new Piece(Color.YELLOW, new boolean[][]
+                    {
+                            {true, true},
+                            {true, true},
+                    }));
+            put("I", new Piece(Color.CYAN, new boolean[][]
+                    {
+                            {true, true, true, true},
+                            {false, false, false, false},
+                            {false, false, false, false},
+                            {false, false, false, false}
+                    }));
+            put("S", new Piece(Color.GREEN, new boolean[][]
+                    {
+                            {false, true, true},
+                            {true, true, false},
+                            {false, false, false}
+                    }));
+            put("Z", new Piece(Color.RED, new boolean[][]
+                    {
+                            {true, true, false},
+                            {false, true, true},
+                            {false, false, false}
+                    }));
+            put("J", new Piece(Color.ORANGE, new boolean[][]
+                    {
+                            {true, true, true},
+                            {false, false, true},
+                            {false, false, false}
+                    }));
+            put("T", new Piece(Color.MAGENTA, new boolean[][]
+                    {
+                            {true, true, true},
+                            {false, true, false},
+                            {false, false, false}
+                    }));
+            put("L", new Piece(Color.BLUE, new boolean[][]
+                    {
+                            {true, true, true},
+                            {true, false, false},
+                            {false, false, false}
+                    }));
+        }};
+    private Point pieceLocation;
 
     public TetrisBoard(int xOffset, int yOffset, int width, int height) {
-        board = new Color[width][height];
+        board = new Color[height][width];
         this.xOffset = xOffset;
         this.yOffset = yOffset;
     }
 
     public void setCurrentBlock(TetrisBlock block)
     {
-        currentBlock = block;
+        currentPiece = block.getPiece();
+        pieceLocation = new Point(board[0].length/2, 0);
     }
-    public boolean isValid(List<Point> solid) {
-        for(Point point : solid) {
-            if(board[point.getX()][point.getY()] != null) {
+    public boolean isValid() {
+        for(Point point : currentPiece.getPoints())
+        {
+            if (point.getX() > board[0].length || point.getY() > board.length || point.getX() < 0 || point.getY() < 0)
                 return false;
-            }
         }
-        return true;
     }
 
     public void render(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board.length, BLOCK_SIZE * board[0].length - 1);
-        for(int x = 0; x < board.length; x++) {
-            for(int y = 0; y < board[x].length; y++) {
-                if(board[x][y] != null) {
-                    shapeRenderer.setColor(board[x][y]);
+        for(int y = 0; y < board.length; y++) {
+            for(int x = 0; x < board[y].length; x++) {
+                if(board[y][x] != null) {
+                    shapeRenderer.setColor(board[y][x]);
                     shapeRenderer.rect(xOffset + x * 32 + 2, yOffset + y * 32 + 2, 28, 28);
                 }
             }
@@ -61,12 +97,12 @@ public class TetrisBoard {
 
     public void rotateCurrentBlockClockwise()
     {
-        rotation = (rotation + 90 + 360) % 360;
+        currentPiece.rotateClockwise();
     }
 
     public void rotateCurrentBlockCounterclockwise()
     {
-        rotation = (rotation - 90 + 360) % 360;
+        currentPiece.rotateCounterclockwise();
     }
 
     public void addPiece(List<Point> points, Color color) {

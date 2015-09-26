@@ -13,195 +13,86 @@ import java.util.List;
 public enum TetrisBlock {
     O(Color.YELLOW) {
         @Override
-        protected List<Point> getDefaultState(CardinalRotation rotation) {
-            return ImmutableList.of(
-                    new Point(0, 0),
-                    new Point(0, 1),
-                    new Point(1, 0),
-                    new Point(1, 1)
-            );
+        protected Piece getPiece(CardinalRotation rotation) {
+            return new Piece(new boolean[][]
+                    {
+                            {true, true},
+                            {true, true},
+                    });
         }
     },
     I(Color.CYAN) {
         @Override
-        protected List<Point> getDefaultState(CardinalRotation rotation) {
-            ImmutableList.Builder<Point> points = ImmutableList.builder();
-            switch (rotation) {
-                case ZERO:
-                    points = points.add(new Point(0, 0))
-                            .add(new Point(0, 1))
-                            .add(new Point(0, 2))
-                            .add(new Point(0, 3))
-                            .add(new Point(0, 4));
-                    break;
-                case NINETY: {
-                    points = points.add(new Point(0, 0))
-                            .add(new Point(1, 0))
-                            .add(new Point(2, 0))
-                            .add(new Point(3, 0))
-                            .add(new Point(4, 0));
-                    break;
-                }
-                case ONE_EIGHTY: {
-                    points = points.add(new Point(0, 0))
-                            .add(new Point(0, -1))
-                            .add(new Point(0, -2))
-                            .add(new Point(0, -3))
-                            .add(new Point(0, -4));
-                    break;
-                }
-                case TWO_SEVENTY: {
-                    points = points.add(new Point(0, 0))
-                            .add(new Point(-1, 0))
-                            .add(new Point(-2, 0))
-                            .add(new Point(-3, 0))
-                            .add(new Point(-4, 0));
-                }
-            }
-            return points.build();
+        protected Piece getPiece(CardinalRotation rotation) {
+            return new Piece(new boolean[][]
+                    {
+                            {true, true, true, true},
+                            {false, false, false, false},
+                            {false, false, false, false},
+                            {false, false, false, false}
+                    });
         }
     },
     S(Color.GREEN) {
         @Override
-        protected List<Point> getDefaultState(CardinalRotation rotation) {
-            ImmutableList.Builder<Point> points = ImmutableList.builder();
-            switch (rotation) {
-                case ZERO: {
-                    return points.add(new Point(0, 0))
-                            .add(new Point(1, 0))
-                            .add(new Point(1, 1))
-                            .add(new Point(2, 2)).build();
-                }
-                case NINETY: {
-                    return points.add(new Point(0, 0))
-                            .add(new Point(0, -1))
-                            .add(new Point(1, -1))
-                            .add(new Point(1, -2)).build();
-                }
-            }
-            return points.build();
+        protected Piece getPiece(CardinalRotation rotation) {
+            return new Piece(new boolean[][]
+                    {
+                            {false, true, true},
+                            {true, true, false},
+                            {false, false, false}
+                    });
         }
     },
     Z(Color.RED) {
         @Override
-        protected List<Point> getDefaultState(CardinalRotation rotation) {
-            ImmutableList.Builder<Point> points = ImmutableList.builder();
-            switch (rotation) {
-
-            }
-            return points.build();
+        protected Piece getPiece(CardinalRotation rotation) {
+            return new Piece(new boolean[][]
+                    {
+                            {true, true, false},
+                            {false, true, true},
+                            {false, false, false}
+                    });
         }
     },
     J(Color.ORANGE) {
         @Override
-        protected List<Point> getDefaultState(CardinalRotation rotation) {
-            ImmutableList.Builder<Point> points = ImmutableList.builder();
-            switch (rotation) {
-                case ZERO:
-                    points = points.add(new Point(2, 0))
-                            .add(new Point(2, 1))
-                            .add(new Point(2, 2))
-                            .add(new Point(1, 2));
-                    break;
-                case NINETY:
-                    points = points.add(new Point(2, 1))
-                            .add(new Point(2, 2))
-                            .add(new Point(1, 2))
-                            .add(new Point(0, 2));
-                case ONE_EIGHTY:
-                    points =  points.add(new Point(1, 2))
-                            .add(new Point(0, 0))
-                            .add(new Point(0, 1))
-                            .add(new Point(0, 2));
-                    break;
-                case TWO_SEVENTY:
-                    points = points.add(new Point(0, 1))
-                            .add(new Point(0, 0))
-                            .add(new Point(1, 0))
-                            .add(new Point(2, 0));
-                    break;
-            }
-            return points.build();
+        protected Piece getPiece(CardinalRotation rotation) {
+            return new Piece(new boolean[][]
+                    {
+                            {true, true, true},
+                            {false, false, true},
+                            {false, false, false}
+                    });
         }
     },
     L(Color.BLUE) {
         @Override
-        protected List<Point> getDefaultState(CardinalRotation rotation) {
-            ImmutableList.Builder<Point> points = ImmutableList.builder();
-            switch (rotation) {
-                case ZERO:
-                    points = points.add(new Point(0, 0))
-                            .add(new Point(0, 1))
-                            .add(new Point(0, 2))
-                            .add(new Point(1, 2));
-                    break;
-                case NINETY:
-                    points = points.add(new Point(0, 0))
-                            .add(new Point(1, 0))
-                            .add(new Point(2, 0))
-                            .add(new Point(0, 1));
-                case ONE_EIGHTY:
-                    points =  points.add(new Point(1, 0))
-                            .add(new Point(2, 0))
-                            .add(new Point(2, 1))
-                            .add(new Point(2, 2));
-                    break;
-                case TWO_SEVENTY:
-                    points = points.add(new Point(2, 1))
-                            .add(new Point(0, 2))
-                            .add(new Point(1, 2))
-                            .add(new Point(2, 2));
-                    break;
-            }
-            return points.build();
+        protected Piece getPiece(CardinalRotation rotation) {
+            return new Piece(new boolean[][]
+                    {
+                            {true, true, true},
+                            {true, false, false},
+                            {false, false, false}
+                    });
         }
     },
     T(Color.MAGENTA) {
         @Override
-        protected List<Point> getDefaultState(CardinalRotation rotation) {
-            ImmutableList.Builder<Point> points = ImmutableList.builder();
-            switch (rotation) {
-                case ZERO:
-                    points = points.add(new Point(0, 0))
-                                .add(new Point(1, 0))
-                                .add(new Point(2, 0))
-                                .add(new Point(1, 1));
-                    break;
-                case NINETY:
-                    points = points.add(new Point(1, 1))
-                                .add(new Point(2, 0))
-                                .add(new Point(2, 1))
-                                .add(new Point(2, 2));
-                case ONE_EIGHTY:
-                    points =  points.add(new Point(1, 1))
-                                .add(new Point(0, 2))
-                                .add(new Point(1, 2))
-                                .add(new Point(2, 2));
-                    break;
-                case TWO_SEVENTY:
-                    points = points.add(new Point(1, 1))
-                                .add(new Point(0, 0))
-                                .add(new Point(0, 1))
-                                .add(new Point(0, 2));
-                    break;
-            }
-            return points.build();
+        protected Piece getPiece(CardinalRotation rotation) {
+            return new Piece(new boolean[][]
+                    {
+                            {true, true, true},
+                            {false, true, false},
+                            {false, false, false}
+                    });
         }
     };
-
-    public final List<Point> defaultState;
-    public final List<Point> ninetyDegreeState;
-    public final List<Point> oneEightyDegreeState;
-    public final List<Point> twoSeventyDegreeState;
     public final Color color;
 
     TetrisBlock(Color color) {
-        defaultState = getDefaultState(CardinalRotation.ZERO);
-        ninetyDegreeState = getDefaultState(CardinalRotation.NINETY);
-        oneEightyDegreeState = getDefaultState(CardinalRotation.ONE_EIGHTY);
-        twoSeventyDegreeState = getDefaultState(CardinalRotation.TWO_SEVENTY);
         this.color = color;
     }
 
-    protected abstract List<Point> getDefaultState(CardinalRotation rotation);
+    public abstract Piece getPiece();
 }
