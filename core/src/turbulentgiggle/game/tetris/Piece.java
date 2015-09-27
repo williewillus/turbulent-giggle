@@ -90,7 +90,7 @@ public class Piece {
                 }
                 if (rowIsEmpty)
                 {
-                    for (int k = y; k < piece.length; k++ )
+                    for (int k = y; k < piece.length - 1; k++ )
                     {
                         piece[k] = piece[k+1];
                     }
@@ -114,7 +114,7 @@ public class Piece {
                 }
                 if (rowIsEmpty)
                 {
-                    for (int k = y; k >= 0; k-- )
+                    for (int k = y; k >= 1; k-- )
                     {
                         piece[k] = piece[k-1];
                     }
