@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import org.lwjgl.util.Point;
 import turbulentgiggle.game.CScreen;
+import turbulentgiggle.game.Controller;
 
 /**
  * Created by Quang on 9/26/2015.
@@ -14,8 +15,8 @@ public class TetrisScreen extends CScreen {
 
     private TetrisBoard board;
 
-    public TetrisScreen(Game game) {
-        super(game);
+    public TetrisScreen(Game game, Controller controller) {
+        super(game, controller);
 
     }
 
@@ -32,6 +33,9 @@ public class TetrisScreen extends CScreen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
+        controller.poll();
+        System.out.println(controller.left() + " " + controller.right());
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         board.render(shapeRenderer);
         shapeRenderer.end();

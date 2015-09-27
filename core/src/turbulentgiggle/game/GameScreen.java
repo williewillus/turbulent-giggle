@@ -7,8 +7,8 @@ import com.badlogic.gdx.Game;
  */
 public class GameScreen extends CScreen {
 
-    public GameScreen(Game game) {
-        super(game);
+    public GameScreen(Game game, Controller controller) {
+        super(game, controller);
     }
 
     @Override

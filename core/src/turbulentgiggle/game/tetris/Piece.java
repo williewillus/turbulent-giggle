@@ -57,6 +57,7 @@ public class Piece {
         {
             return piece[y][x];
         }
+        return false;
     }
     public int getWidth()
     {

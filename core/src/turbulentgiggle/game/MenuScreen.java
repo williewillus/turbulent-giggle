@@ -11,8 +11,8 @@ import turbulentgiggle.game.utils.ResourceLoader;
 public class MenuScreen extends CScreen {
 
 
-    public MenuScreen(Game game) {
-        super(game);
+    public MenuScreen(Game game, Controller controller) {
+        super(game, controller);
     }
 
     @Override

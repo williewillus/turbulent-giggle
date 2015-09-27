@@ -3,6 +3,7 @@ package turbulentgiggle.game.myo;
 import com.thalmic.myo.DeviceListener;
 import com.thalmic.myo.Hub;
 import com.thalmic.myo.Myo;
+import com.thalmic.myo.enums.LockingPolicy;
 
 /*
  * JVM Arguments to help debug.
@@ -17,7 +18,7 @@ public class HelloMyo {
 
             System.out.println("Attempting to find a Myo...");
             Myo myo = hub.waitForMyo(10000);
-
+            hub.setLockingPolicy(LockingPolicy.LOCKING_POLICY_NONE);
             if (myo == null) {
                 throw new RuntimeException("Unable to find a Myo!");
             }
