@@ -85,14 +85,14 @@ public class Controller extends AbstractDeviceListener {
 
     }
 
-    private static double SENSITIVITY = 1;
+    private static double SENSITIVITY = 1.5;
 
     public boolean rotateCounterClockwise() {
-        return rollW - avgRoll < -SCALE/2 ? rollW - avgRoll + SCALE > SENSITIVITY : rollW - avgRoll < SCALE/2 && rollW - avgRoll > SENSITIVITY;
+        return rollW - initRoll < -SCALE/2 ? rollW - initRoll + SCALE > SENSITIVITY : rollW - initRoll < SCALE/2 && rollW - initRoll > SENSITIVITY;
     }
 
     public boolean rotateClockwise() {
-        return rollW - avgRoll > SCALE/2 ? rollW - avgRoll - SCALE < -SENSITIVITY : rollW - avgRoll > -SCALE/2 && rollW - avgRoll < -SENSITIVITY;
+        return rollW - initRoll > SCALE/2 ? rollW - initRoll - SCALE < -SENSITIVITY : rollW - initRoll > -SCALE/2 && rollW - initRoll < -SENSITIVITY;
     }
 
     public boolean left() {
@@ -113,11 +113,15 @@ public class Controller extends AbstractDeviceListener {
     }
 
     public boolean action() {
-        return pitchW - avgPitch < -SCALE/6;//currentPose.getType() == PoseType.WAVE_IN;//currentPose.getType() == PoseType.FIST || currentPose.getType() == PoseType.FINGERS_SPREAD;
+        return pitchW - initPitch < -SENSITIVITY*2;//currentPose.getType() == PoseType.WAVE_IN;//currentPose.getType() == PoseType.FIST || currentPose.getType() == PoseType.FINGERS_SPREAD;
     }
 
     public boolean action2() {
-        return Gdx.input.isButtonPressed(Input.Keys.X);
+        return currentPose.getType() == PoseType.FIST;
+    }
+
+    public boolean action3() {
+        return currentPose.getType() == PoseType.FINGERS_SPREAD;
     }
 
 }

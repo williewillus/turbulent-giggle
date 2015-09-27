@@ -1,9 +1,12 @@
 package turbulentgiggle.game.tetris;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import org.lwjgl.util.Point;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,10 +17,9 @@ public class TetrisBoard {
 
     private Color[][] board;
     private int xOffset, yOffset;
-    private static final int BLOCK_SIZE = 32;
+    private static final int BLOCK_SIZE = 24, BLOCK_PAD = 1;
     private Piece currentPiece;
-    private static final int CLOCKWISE = 1;
-    private static final int COUNTERCLOCKWISE = 2;
+    private int score = 0;
 
     private HashMap<String, Piece> pieceDefinitions = new HashMap<String, Piece>()
         {{
@@ -28,8 +30,8 @@ public class TetrisBoard {
                     }));
             put("I", new Piece(Color.CYAN, new boolean[][]
                     {
-                            {true, true, true, true},
                             {false, false, false, false},
+                            {true, true, true, true},
                             {false, false, false, false},
                             {false, false, false, false}
                     }));
@@ -65,18 +67,43 @@ public class TetrisBoard {
                     }));
         }};
 
+    private boolean gameover = false;
+
+    private static final int MULTIPLIER = 2;
+    private static final int SCORE = 1000;
+
+    public boolean isGameover() {
+        return gameover;
+    }
+
+    public void reset() {
+        for(Color[] colors : board) {
+            Arrays.fill(colors, null);
+        }
+        score = 0;
+        gameover = false;
+    }
+
     public TetrisBoard(int xOffset, int yOffset, int width, int height) {
         board = new Color[height][width];
         this.xOffset = xOffset;
         this.yOffset = yOffset;
-        addPiece("Z");
+        addPiece(getRandomBlock());
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public void addPiece(String type)
     {
         currentPiece = pieceDefinitions.get(type);
-        currentPiece.currentPosition = new Point(board[0].length/2, board.length - 3);
+        currentPiece.currentPosition = new Point(board[0].length/2 - currentPiece.piece[0].length/2, board.length - currentPiece.piece.length);
+        if(!isCurrentLocationValid(currentPiece)) {
+            gameover = true;
+        }
     }
+
     public boolean moveRight()
     {
         Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
@@ -113,6 +140,7 @@ public class TetrisBoard {
     }
     private void dropRows()
     {
+        int multiplier = 1;
         for (int y = 0; y < board.length; y++)
         {
             boolean totallyFilled = true;
@@ -126,6 +154,8 @@ public class TetrisBoard {
             }
             if (totallyFilled)
             {
+                score += SCORE * multiplier;
+                multiplier *= MULTIPLIER;
                 for (int k = y; k < board.length - 1; k++ )
                 {
                     board[k] = board[k+1];
@@ -149,18 +179,38 @@ public class TetrisBoard {
                         [point.getX()] = currentPiece.color;
             }
             dropRows();
-            addPiece((new String[] {"O", "I", "S", "Z", "J", "T", "L"})[(int)(Math.random() * 7)]);
+            addPiece(getRandomBlock());
             return true;
         }
         return false;
     }
+
+    private List<String> blocknames = Arrays.asList("O", "I", "S", "Z", "J", "T", "L");
+    private String nextBlock;
+
+    public void shuffle() {
+        Collections.shuffle(blocknames);
+    }
+
+    private int curBlockNum = 0;
+
+    public String getRandomBlock() {
+        String ret = nextBlock;
+        nextBlock = blocknames.get(curBlockNum++);
+        if(curBlockNum >= 7) {
+            curBlockNum = 0;
+            shuffle();
+        }
+        return ret;
+    }
+
     public void render(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for(int y = 0; y < board.length; y++) {
             for(int x = 0; x < board[y].length; x++) {
                 if(board[y][x] != null) {
                     shapeRenderer.setColor(board[y][x]);
-                    shapeRenderer.rect(xOffset + x * 32 + 2, yOffset + y * 32 + 2, 28, 28);
+                    shapeRenderer.rect(xOffset + x * BLOCK_SIZE + BLOCK_PAD, yOffset + y * BLOCK_SIZE - BLOCK_PAD, BLOCK_SIZE - BLOCK_PAD*2, BLOCK_SIZE - BLOCK_PAD*2);
                 }
             }
         }
@@ -168,10 +218,11 @@ public class TetrisBoard {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board[0].length, BLOCK_SIZE * board.length - 1);
+        shapeRenderer.rect(10, Gdx.graphics.getHeight() - 10, xOffset - 20, yOffset - 20);
         for (Point p: currentPiece.getPoints())
         {
             shapeRenderer.setColor(currentPiece.color);
-            shapeRenderer.rect(xOffset + p.getX() * 32 + 2, yOffset + p.getY() * 32 + 2, 28, 28);
+            shapeRenderer.rect(xOffset + p.getX() * BLOCK_SIZE + BLOCK_PAD, yOffset + p.getY() * BLOCK_SIZE + BLOCK_PAD, BLOCK_SIZE - BLOCK_PAD*2, BLOCK_SIZE - BLOCK_PAD*2);
         }
         shapeRenderer.end();
     }
@@ -225,7 +276,7 @@ public class TetrisBoard {
                 currentPiece.currentPosition.translate(-leftMost, 0);
             }
             if(rightMost >= board[0].length) {
-                currentPiece.currentPosition.translate(-(rightMost - (board.length - 1)), 0);
+                currentPiece.currentPosition.translate(-(rightMost - (board[0].length - 1)), 0);
             }
             allPointsEmpty = true;
             allPointsValid = true;
@@ -251,6 +302,13 @@ public class TetrisBoard {
                 } else {
                     currentPiece.rotateClockwise();
                 }
+                return;
+            }
+        } if(!allPointsEmpty) {
+            if(clockwise) {
+                currentPiece.rotateCounterclockwise();
+            } else {
+                currentPiece.rotateClockwise();
             }
         }
     }

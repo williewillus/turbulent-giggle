@@ -1,6 +1,7 @@
 package turbulentgiggle.game.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,12 +14,13 @@ public class ResourceLoader {
 
     private static TextureAtlas game, gui;
     private static Skin skin;
-    private static BitmapFont font;//font16, font24;
+    private static BitmapFont font32, font20;//font16, font20;
+    private static Music music;
 
     public static void load() {
 //        loadTextures();
         loadFonts();
-//        loadSounds();
+        loadSounds();
     }
 
     private static void loadTextures() {
@@ -28,25 +30,29 @@ public class ResourceLoader {
     }
 
     private static void loadFonts() {
-        font = new BitmapFont(Gdx.files.internal("assets/fonts/visitor32.fnt"));
+        font32 = new BitmapFont(Gdx.files.internal("assets/fonts/visitor32.fnt"));
+        font20 = new BitmapFont(Gdx.files.internal("assets/fonts/visitor20.fnt"));
 //        font16 = new BitmapFont(Gdx.files.internal("assets/fonts/font16.fnt"));
-//        font24 = new BitmapFont(Gdx.files.internal("assets/fonts/font24.fnt"));
+//        font20 = new BitmapFont(Gdx.files.internal("assets/fonts/font20.fnt"));
     }
 
     private static void loadSounds() {
-
+        music = Gdx.audio.newMusic(Gdx.files.internal("assets/sounds/bg.mp3"));
     }
 
     public static TextureRegion getTexture(String textureName) {
         return game.findRegion(textureName);
     }
-    public static BitmapFont getFont() { return font; }
-
+    public static BitmapFont getFont() { return font32; }
+    public static BitmapFont getSmallFont() {return font20;}
+    public static Music getSound() {return music;}
 
     public static void dispose() {
 //        game.dispose();
 //        gui.dispose();
 //        skin.dispose();
-        font.dispose();
+        font32.dispose();
+        font20.dispose();
+        music.dispose();
     }
 }

@@ -30,7 +30,7 @@ public class Piece {
         }
         return l;
     }
-    public void rotateClockwise()
+    public void rotateCounterclockwise()
     {
         boolean[][] newPiece = new boolean[piece.length][piece[0].length];
         for (int y = 0; y < piece.length; y++)
@@ -43,7 +43,7 @@ public class Piece {
         piece = newPiece;
         fixRotation();
     }
-    public void rotateCounterclockwise()
+    public void rotateClockwise()
     {
         boolean[][] newPiece = new boolean[piece.length][piece[0].length];
         for (int y = 0; y < piece.length; y++)
@@ -58,23 +58,23 @@ public class Piece {
     }
     private void fixRotation()
     {
-        boolean botRowIsEmpty = true;
-        for (boolean b: piece[0])
-        {
-            if (b)
-            {
-                botRowIsEmpty = false;
-                break;
-            }
-        }
-        if (botRowIsEmpty)
-        {
-            for (int y = 0; y < piece.length - 1; y++)
-            {
-                piece[y] = piece[y+1];
-            }
-            piece[piece.length -1] = new boolean[piece[0].length];
-        }
+//        boolean botRowIsEmpty = true;
+//        for (boolean b: piece[0])
+//        {
+//            if (b)
+//            {
+//                botRowIsEmpty = false;
+//                break;
+//            }
+//        }
+//        if (botRowIsEmpty)
+//        {
+//            for (int y = 0; y < piece.length - 1; y++)
+//            {
+//                piece[y] = piece[y+1];
+//            }
+//            piece[piece.length -1] = new boolean[piece[0].length];
+//        }
     }
     public boolean getPointAt(int x, int y)
     {
