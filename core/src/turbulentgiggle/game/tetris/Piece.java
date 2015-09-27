@@ -9,11 +9,13 @@ import org.lwjgl.util.Point;
 public class Piece {
     boolean[][] piece;
     public Color color;
+    public Point currentPosition;
     public Piece(Color color, boolean[][] piece)
     {
         this.piece = piece;
         this.color = color;
     }
+
     public List<Point> getPoints()
     {
         List<Point> l = new ArrayList<Point>();
@@ -22,7 +24,7 @@ public class Piece {
             for (int x = 0; x < piece[0].length; x++)
             {
                 if (piece[y][x])
-                    l.add(new Point(x, y));
+                    l.add(new Point(currentPosition.getX() + x, currentPosition.getY() + y));
             }
         }
         return l;

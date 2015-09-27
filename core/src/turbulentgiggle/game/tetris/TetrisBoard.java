@@ -61,7 +61,6 @@ public class TetrisBoard {
                             {false, false, false}
                     }));
         }};
-    private Point pieceLocation;
 
     public TetrisBoard(int xOffset, int yOffset, int width, int height) {
         board = new Color[height][width];
@@ -69,7 +68,7 @@ public class TetrisBoard {
         this.yOffset = yOffset;
     }
 
-    public boolean isValid() {
+    public boolean isCurrentLocationValid() {
         for(Point point : currentPiece.getPoints())
         {
             if (point.getX() > board[0].length || point.getY() > board.length || point.getX() < 0 || point.getY() < 0)
@@ -87,6 +86,11 @@ public class TetrisBoard {
                     shapeRenderer.rect(xOffset + x * 32 + 2, yOffset + y * 32 + 2, 28, 28);
                 }
             }
+        }
+        for (Point p: currentPiece.getPoints())
+        {
+            shapeRenderer.setColor(currentPiece.color);
+            shapeRenderer.rect(xOffset + p.getX() * 32 + 2, yOffset + p.getY() * 32 + 2, 28, 28);
         }
     }
 
