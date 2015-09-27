@@ -49,7 +49,7 @@ public class TetrisScreen extends CScreen {
             System.out.println("ACTION");
         }
         if(tick <= 0) {
-            tick = 60;
+            tick = 10;
             board.tick();
         } else {
             tick--;

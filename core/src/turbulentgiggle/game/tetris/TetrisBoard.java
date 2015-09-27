@@ -143,7 +143,9 @@ public class TetrisBoard {
             {
                 board[point.getY()][point.getX()] = currentPiece.color;
             }
+            System.out.println(1);
             dropRows();
+            System.out.println(2);
             addPiece((new String[] {"O", "I", "S", "Z", "J", "T", "L"})[(int)(Math.random() * 7)]);
         }
     }
