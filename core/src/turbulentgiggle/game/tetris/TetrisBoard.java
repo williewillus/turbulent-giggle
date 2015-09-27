@@ -68,8 +68,32 @@ public class TetrisBoard {
         this.yOffset = yOffset;
     }
 
-    public boolean isCurrentLocationValid() {
-        for(Point point : currentPiece.getPoints())
+    public boolean moveRight()
+    {
+        Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
+        currentPiece.currentPosition.setX(oldPosition.getX() + 1);
+        if (!isCurrentLocationValid(currentPiece))
+        {
+            currentPiece.currentPosition = oldPosition;
+            return false;
+        }
+        return true;
+    }
+
+    public boolean moveLeft()
+    {
+        Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
+        currentPiece.currentPosition.setX(oldPosition.getX() - 1);
+        if (!isCurrentLocationValid(currentPiece))
+        {
+            currentPiece.currentPosition = oldPosition;
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isCurrentLocationValid(Piece p) {
+        for(Point point : p.getPoints())
         {
             if (point.getX() > board[0].length || point.getY() > board.length || point.getX() < 0 || point.getY() < 0)
                 return false;
