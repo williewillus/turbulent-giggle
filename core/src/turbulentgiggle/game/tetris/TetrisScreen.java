@@ -5,11 +5,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.google.common.io.Files;
 import turbulentgiggle.game.CScreen;
 import turbulentgiggle.game.Controller;
 import turbulentgiggle.game.GameOver;
 import turbulentgiggle.game.Pause;
 import turbulentgiggle.game.utils.ResourceLoader;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * Created by Quang on 9/26/2015.
@@ -18,13 +23,23 @@ public class TetrisScreen extends CScreen {
 
     private TetrisBoard board;
     private Music music;
-
+    private String highScore;
+    private int hiscore;
     public TetrisScreen(Game game, Controller controller) {
         super(game, controller);
     }
 
     @Override
     public void show() {
+        try {
+            highScore = Files.readFirstLine(new File("assets/hiscore.txt"), Charset.defaultCharset());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while(highScore.length() < 10) {
+            highScore = "0" + highScore;
+        }
+        hiscore = Integer.valueOf(highScore);
         Gdx.gl.glClearColor(0f,0f,0f,1f);
         board = new TetrisBoard(210, 0, 16, 20);
         font = ResourceLoader.getFont();
@@ -111,9 +126,23 @@ public class TetrisScreen extends CScreen {
         batch.begin();
         calcScoreString();
         font.draw(batch, scoreString, 10, 470);
+        font.draw(batch, "HISCORE", 10, 60);
+        font.draw(batch, highScore, 10, 30);
         batch.end();
         if (board.isGameover()) {
             if (gameover.render(controller, batch, shapeRenderer)) {
+                if(board.getScore() > hiscore) {
+                    hiscore = board.getScore();
+                    highScore = String.valueOf(hiscore);
+                    while(highScore.length() < 10) {
+                        highScore = "0" + highScore;
+                    }
+                    try {
+                        Files.write(String.valueOf(hiscore), new File("assets/hiscore.txt"), Charset.defaultCharset());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 board.reset();
                 music.setVolume(1f);
             }

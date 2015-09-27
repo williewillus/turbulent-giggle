@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import org.lwjgl.util.Point;
 import turbulentgiggle.game.Constants;
 import turbulentgiggle.game.FadingText;
+import turbulentgiggle.game.utils.ResourceLoader;
 
 import java.util.*;
 
@@ -281,17 +282,17 @@ public class TetrisBoard {
         shapeRenderer.rect(xOffset + (currentPiece.currentPosition.getX() + x) * BLOCK_SIZE, yOffset, width * BLOCK_SIZE, board.length * BLOCK_SIZE);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board[0].length, BLOCK_SIZE * board.length - 1);
-        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2, Constants.HEIGHT - 170, BLOCK_SIZE * 5, BLOCK_SIZE * 5);
+        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2, Constants.HEIGHT - 200, BLOCK_SIZE * 5, BLOCK_SIZE * 5);
         for (Point point : getPiece(nextBlock).getPoints()) {
             shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, Constants.HEIGHT - 170 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
+            shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, Constants.HEIGHT - 200 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
         }
 
-        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2, Constants.HEIGHT - 310, BLOCK_SIZE * 5, BLOCK_SIZE * 5);
+        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2, Constants.HEIGHT - 360, BLOCK_SIZE * 5, BLOCK_SIZE * 5);
         if (holdPiece != null) {
             for (Point point : getPiece(holdPiece).getPoints()) {
                 shapeRenderer.setColor(Color.WHITE);
-                shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, Constants.HEIGHT - 310 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
+                shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, Constants.HEIGHT - 360 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
             }
         }
         for (Point p : currentPiece.getPoints()) {
@@ -300,6 +301,8 @@ public class TetrisBoard {
         }
         shapeRenderer.end();
         batch.begin();
+        ResourceLoader.getSmallFont().draw(batch, "Next Block", (xOffset - BLOCK_SIZE * 5) / 2, Constants.HEIGHT - 180 + BLOCK_SIZE * 5);
+        ResourceLoader.getSmallFont().draw(batch, "Hold Block", (xOffset - BLOCK_SIZE * 5) / 2, Constants.HEIGHT - 340 + BLOCK_SIZE * 5);
         for(int i = fadingTexts.size() - 1; i >= 0; i--) {
             if(fadingTexts.get(i).render(batch)) {
                 fadingTexts.remove(i);
