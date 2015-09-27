@@ -68,14 +68,55 @@ public class TetrisBoard {
         this.yOffset = yOffset;
     }
 
-    public boolean isCurrentLocationValid() {
-        for(Point point : currentPiece.getPoints())
+    public boolean moveRight()
+    {
+        Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
+        currentPiece.currentPosition.setX(oldPosition.getX() + 1);
+        if (!isCurrentLocationValid(currentPiece))
+        {
+            currentPiece.currentPosition = oldPosition;
+            return false;
+        }
+        return true;
+    }
+
+    public boolean moveLeft()
+    {
+        Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
+        currentPiece.currentPosition.setX(oldPosition.getX() - 1);
+        if (!isCurrentLocationValid(currentPiece))
+        {
+            currentPiece.currentPosition = oldPosition;
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isCurrentLocationValid(Piece p) {
+        for(Point point : p.getPoints())
         {
             if (point.getX() > board[0].length || point.getY() > board.length || point.getX() < 0 || point.getY() < 0)
                 return false;
+            if (board[point.getY()][point.getX()] != null)
+                return false;
+        }
+        return true;
+    }
+    public void tick()
+    {
+        Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
+        if (!isCurrentLocationValid(currentPiece))
+        {
+            currentPiece.currentPosition = oldPosition;
+            for(Point point : currentPiece.getPoints())
+            {
+                board[point.getY()][point.getX()] = currentPiece.color;
+            }
+        }
+        else {
+            currentPiece.currentPosition.setY(currentPiece.currentPosition.getY() + 1);
         }
     }
-
     public void render(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board.length, BLOCK_SIZE * board[0].length - 1);
@@ -102,16 +143,6 @@ public class TetrisBoard {
     public void rotateCurrentBlockCounterclockwise()
     {
         currentPiece.rotateCounterclockwise();
-    }
-
-    public void addPiece(List<Point> points, Color color) {
-        for(Point point : points) {
-            setPosition(point, color);
-        }
-    }
-
-    public void setPosition(Point point, Color color) {
-        board[point.getX()][point.getY()] = color;
     }
 
 }
