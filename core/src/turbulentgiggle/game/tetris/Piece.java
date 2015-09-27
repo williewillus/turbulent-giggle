@@ -14,6 +14,7 @@ public class Piece {
     {
         this.piece = piece;
         this.color = color;
+        fixRotation();
     }
 
     public List<Point> getPoints()

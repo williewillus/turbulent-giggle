@@ -110,7 +110,7 @@ public class TetrisBoard {
     }
     private void dropRows()
     {
-        for (int y = board.length - 1; y >= 0; y--)
+        for (int y = 0; y < board.length; y++)
         {
             boolean totallyFilled = true;
             for(Color c: board[y])
@@ -123,12 +123,12 @@ public class TetrisBoard {
             }
             if (totallyFilled)
             {
-                for (int k = y-1; k >= 1; k-- )
+                for (int k = y; k < board.length; k++ )
                 {
-                    board[k+1] = board[k];
+                    board[k] = board[k+1];
                 }
-                board[0] = new Color[board[0].length];
-                y += 1;
+                board[board.length - 1] = new Color[board[0].length];
+                y -= 1;
             }
 
         }
@@ -142,7 +142,8 @@ public class TetrisBoard {
             currentPiece.currentPosition = oldPosition;
             for(Point point : currentPiece.getPoints())
             {
-                board[point.getY()][point.getX()] = currentPiece.color;
+                board[point.getY()]
+                        [point.getX()] = currentPiece.color;
             }
             System.out.println(1);
             dropRows();
@@ -152,7 +153,7 @@ public class TetrisBoard {
     }
     public void render(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board.length, BLOCK_SIZE * board[0].length - 1);
+        shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board[0].length, BLOCK_SIZE * board.length - 1);
         for(int y = 0; y < board.length; y++) {
             for(int x = 0; x < board[y].length; x++) {
                 if(board[y][x] != null) {

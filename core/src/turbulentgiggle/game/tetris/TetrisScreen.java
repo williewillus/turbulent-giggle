@@ -23,7 +23,7 @@ public class TetrisScreen extends CScreen {
     @Override
     public void show() {
         Gdx.gl.glClearColor(0f,0f,0f,1f);
-        board = new TetrisBoard(100, 0, 15, 10);
+        board = new TetrisBoard(100, 0, 10, 15);
     }
 
     private int right = 0, left = 0;
