@@ -51,15 +51,32 @@ public class TetrisScreen extends CScreen {
 
     private int rotClockwise = DELAY, rotCounterClockwise = DELAY, left = MOVE_DELAY, right = MOVE_DELAY, action = DELAY, action2 = DELAY, action3 = DELAY;
     private int tick = TICK;
-    private static final int TICK = 20;
+    private static int TICK = 20;
     private static final int DELAY = 20, MOVE_DELAY = 10;
     private BitmapFont font;
     private GameOver gameover;
     private Pause pause;
     private boolean paused = false, speedUp = false;
+    private int level = 0, prevLevel;
+    private String levelStr;
 
     @Override
     public void render(float delta) {
+        prevLevel = level;
+        level = board.getScore()/10000 + 1;
+        if(level > 99) {
+            level = 99;
+        }
+        if(level != prevLevel) {
+            levelStr = String.valueOf(level);
+            while(levelStr.length() < 2) {
+                levelStr = "0" + levelStr;
+            }
+        }
+        TICK = 21 - level;
+        if(TICK < 5) {
+            TICK = 5;
+        }
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
         controller.poll();
         if (!board.isGameover() && !paused) {
@@ -128,6 +145,8 @@ public class TetrisScreen extends CScreen {
         font.draw(batch, scoreString, 10, 470);
         font.draw(batch, "HISCORE", 10, 60);
         font.draw(batch, highScore, 10, 30);
+        font.draw(batch, "LVL", 10, 90);
+        font.draw(batch, levelStr, 80, 90);
         batch.end();
         if (board.isGameover()) {
             if (gameover.render(controller, batch, shapeRenderer)) {
