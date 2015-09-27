@@ -74,6 +74,7 @@ public class TetrisBoard {
             if (point.getX() > board[0].length || point.getY() > board.length || point.getX() < 0 || point.getY() < 0)
                 return false;
         }
+        return true;
     }
 
     public void render(ShapeRenderer shapeRenderer) {
