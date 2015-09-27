@@ -14,26 +14,26 @@ public class KeyController extends Controller {
 
     @Override
     public boolean left() {
-        return Gdx.input.isButtonPressed(Input.Keys.A);
+        return Gdx.input.isKeyPressed(Input.Keys.A);
     }
 
     @Override
     public boolean right() {
-        return Gdx.input.isButtonPressed(Input.Keys.D);
+        return Gdx.input.isKeyPressed(Input.Keys.D);
     }
 
     @Override
     public boolean rotateClockwise() {
-        return Gdx.input.isButtonPressed(Input.Keys.E);
+        return Gdx.input.isKeyPressed(Input.Keys.E);
     }
 
     @Override
     public boolean rotateCounterClockwise() {
-        return Gdx.input.isButtonPressed(Input.Keys.Q);
+        return Gdx.input.isKeyPressed(Input.Keys.Q);
     }
 
     @Override
     public boolean action() {
-        return Gdx.input.isButtonPressed(Input.Keys.S);
+        return Gdx.input.isKeyPressed(Input.Keys.S);
     }
 }
