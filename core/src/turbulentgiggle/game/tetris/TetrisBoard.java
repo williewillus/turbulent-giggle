@@ -3,6 +3,7 @@ package turbulentgiggle.game.tetris;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import org.lwjgl.util.Point;
 
 import java.util.Arrays;
@@ -88,7 +89,7 @@ public class TetrisBoard {
         board = new Color[height][width];
         this.xOffset = xOffset;
         this.yOffset = yOffset;
-        addPiece(getRandomBlock());
+        addPiece(getRandomPiece());
     }
 
     public int getScore() {
@@ -97,10 +98,48 @@ public class TetrisBoard {
 
     public void addPiece(String type)
     {
-        currentPiece = pieceDefinitions.get(type);
+        canHold = true;
+        currentPiece = getPiece(type);
+        curPiece = type;
         currentPiece.currentPosition = new Point(board[0].length/2 - currentPiece.piece[0].length/2, board.length - currentPiece.piece.length);
         if(!isCurrentLocationValid(currentPiece)) {
             gameover = true;
+        }
+    }
+
+    public void setCurrentPiece(Piece piece) {
+        currentPiece = piece;
+        if(!isCurrentLocationValid(currentPiece)) {
+            gameover = true;
+        }
+    }
+
+    private String holdPiece, curPiece;
+    private boolean canHold = true;
+
+    public Piece getPiece(String type) {
+        Piece piece = pieceDefinitions.get(type);
+        Color color = new Color((float)Math.random() * 0.75f + 0.25f, (float)Math.random() * 0.75f + 0.25f, (float)Math.random() * 0.75f + 0.25f, 1f);
+        boolean[][] pieceSolid = new boolean[piece.piece.length][piece.piece[0].length];
+        for(int i = 0; i < pieceSolid.length; i++) {
+            for(int j = 0; j < pieceSolid[0].length; j++) {
+                pieceSolid[i][j] = piece.piece[i][j];
+            }
+        }
+        Piece ret = new Piece(color, pieceSolid);
+        ret.currentPosition = new Point(0,0);
+        return ret;
+    }
+
+    public void hold() {
+        if(holdPiece == null) {
+            holdPiece = curPiece;
+            addPiece(getRandomPiece());
+        } else if(canHold){
+            String temp = curPiece;
+            addPiece(holdPiece);
+            holdPiece = temp;
+            canHold = false;
         }
     }
 
@@ -179,23 +218,25 @@ public class TetrisBoard {
                         [point.getX()] = currentPiece.color;
             }
             dropRows();
-            addPiece(getRandomBlock());
+            addPiece(getRandomPiece());
             return true;
         }
         return false;
     }
 
     private List<String> blocknames = Arrays.asList("O", "I", "S", "Z", "J", "T", "L");
-    private String nextBlock;
+    private String nextBlock = blocknames.get(MathUtils.random(6));
 
     public void shuffle() {
         Collections.shuffle(blocknames);
     }
 
     private int curBlockNum = 0;
+    private Piece nextPiece;
 
-    public String getRandomBlock() {
+    public String getRandomPiece() {
         String ret = nextBlock;
+        nextPiece = getPiece(nextBlock);
         nextBlock = blocknames.get(curBlockNum++);
         if(curBlockNum >= 7) {
             curBlockNum = 0;
@@ -216,9 +257,39 @@ public class TetrisBoard {
         }
         shapeRenderer.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.GRAY);
+        int width = 0;
+
+        int x = currentPiece.getWidth();
+        for(int i = 0; i < currentPiece.getWidth(); i++) {
+            boolean found = false;
+            for(int j = 0; j < currentPiece.getHeight(); j++) {
+                if(currentPiece.piece[j][i]) {
+                    if(i < x)
+                        x = i;
+                    if(!found) {
+                        width++;
+                        found = true;
+                    }
+                }
+            }
+        }
+        shapeRenderer.rect(xOffset + (currentPiece.currentPosition.getX() + x)*BLOCK_SIZE, yOffset, width*BLOCK_SIZE, board.length*BLOCK_SIZE);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board[0].length, BLOCK_SIZE * board.length - 1);
-        shapeRenderer.rect(10, Gdx.graphics.getHeight() - 10, xOffset - 20, yOffset - 20);
+        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5)/2, Gdx.graphics.getHeight() - 170, BLOCK_SIZE*5, BLOCK_SIZE*5);
+        for(Point point : getPiece(nextBlock).getPoints()) {
+            shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.rect((xOffset - BLOCK_SIZE * 5)/2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE/2, Gdx.graphics.getHeight() - 170 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE/2, BLOCK_SIZE - BLOCK_PAD*2, BLOCK_SIZE - BLOCK_PAD*2);
+        }
+
+        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5)/2, Gdx.graphics.getHeight() - 310, BLOCK_SIZE*5, BLOCK_SIZE*5);
+        if(holdPiece != null) {
+            for (Point point : getPiece(holdPiece).getPoints()) {
+                shapeRenderer.setColor(Color.WHITE);
+                shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE/2, Gdx.graphics.getHeight() - 310 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE/2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
+            }
+        }
         for (Point p: currentPiece.getPoints())
         {
             shapeRenderer.setColor(currentPiece.color);

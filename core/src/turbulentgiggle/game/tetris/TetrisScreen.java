@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import turbulentgiggle.game.CScreen;
 import turbulentgiggle.game.Controller;
 import turbulentgiggle.game.GameOver;
+import turbulentgiggle.game.Pause;
 import turbulentgiggle.game.utils.ResourceLoader;
 
 /**
@@ -28,22 +29,25 @@ public class TetrisScreen extends CScreen {
         board = new TetrisBoard(210, 0, 16, 20);
         font = ResourceLoader.getFont();
         gameover = new GameOver();
+        pause = new Pause();
         music = ResourceLoader.getSound();
         music.play();
     }
 
-    private int rotClockwise = DELAY, rotCounterClockwise = DELAY, left = MOVE_DELAY, right = MOVE_DELAY, action = DELAY;
+    private int rotClockwise = DELAY, rotCounterClockwise = DELAY, left = MOVE_DELAY, right = MOVE_DELAY, action = DELAY, action2 = DELAY, action3 = DELAY;
     private int tick = TICK;
     private static final int TICK = 20;
     private static final int DELAY = 20, MOVE_DELAY = 10;
     private BitmapFont font;
     private GameOver gameover;
+    private Pause pause;
+    private boolean paused = false, speedUp = false;
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
         controller.poll();
-        if(!board.isGameover()) {
+        if (!board.isGameover() && !paused) {
             if (controller.rotateClockwise() && rotClockwise <= 0) {
                 rotClockwise = DELAY;
                 board.rotateCurrentBlockClockwise();
@@ -73,28 +77,49 @@ public class TetrisScreen extends CScreen {
             if (action > 0) {
                 action--;
             }
-            if (controller.action() && action <= 0) {
-                board.drop();
-                action = DELAY;
+            if (controller.action()) {
+                speedUp = true;
+            } else {
+                speedUp = false;
+            }
+            if (controller.action2() && action2 <= 0) {
+                board.hold();
+                action2 = DELAY;
+            }
+            if (action2 > 0) {
+                action2--;
             }
             if (tick <= 0) {
                 tick = TICK;
+                if(speedUp) {
+                    tick = TICK/6;
+                }
                 board.tick();
             }
             if (tick > 0) {
                 tick--;
             }
         }
+        if(action3 > 0) {
+            action3--;
+        }
         board.render(shapeRenderer);
         batch.begin();
         calcScoreString();
         font.draw(batch, scoreString, 10, 470);
         batch.end();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || board.isGameover()) {
-            if(gameover.render(controller, batch, shapeRenderer)) {
+        if (board.isGameover()) {
+            if (gameover.render(controller, batch, shapeRenderer)) {
                 board.reset();
             }
-            music.setVolume(music.getVolume()*0.95f);
+            music.setVolume(music.getVolume() * 0.95f);
+        }
+        if (controller.action3() && !board.isGameover() && action3 <= 0) {
+            paused = true;
+        }
+        if(paused) {
+            paused = pause.render(controller, batch, shapeRenderer);
+            action3 = DELAY;
         }
     }
 
