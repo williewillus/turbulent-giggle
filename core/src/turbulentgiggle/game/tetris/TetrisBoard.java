@@ -128,8 +128,9 @@ public class TetrisBoard {
                     board[k+1] = board[k];
                 }
                 board[0] = new Color[board[0].length];
+                y += 1;
             }
-            y += 1;
+
         }
     }
     public void tick()
