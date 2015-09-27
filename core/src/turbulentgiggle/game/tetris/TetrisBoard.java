@@ -66,12 +66,13 @@ public class TetrisBoard {
         board = new Color[height][width];
         this.xOffset = xOffset;
         this.yOffset = yOffset;
+        addPiece("Z");
     }
 
     public void addPiece(String type)
     {
         currentPiece = pieceDefinitions.get(type);
-        currentPiece.currentPosition = new Point(board[0].length/2, 0);
+        currentPiece.currentPosition = new Point(board[0].length/2, board.length - 1);
     }
     public boolean moveRight()
     {
@@ -134,7 +135,7 @@ public class TetrisBoard {
     public void tick()
     {
         Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
-        currentPiece.currentPosition.setY(currentPiece.currentPosition.getY() + 1);
+        currentPiece.currentPosition.setY(currentPiece.currentPosition.getY() - 1);
         if (!isCurrentLocationValid(currentPiece))
         {
             currentPiece.currentPosition = oldPosition;

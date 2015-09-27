@@ -23,21 +23,36 @@ public class TetrisScreen extends CScreen {
     @Override
     public void show() {
         Gdx.gl.glClearColor(0f,0f,0f,1f);
-        board = new TetrisBoard(100, 0, 10, 15);
+        board = new TetrisBoard(100, 0, 15, 10);
     }
+
+    private int right = 0, left = 0;
+    private int tick = 60;
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
         controller.poll();
-        if(controller.right()) {
-            System.out.println("RIGHT");
+        if(controller.right() && right <= 0) {
+            right = 10;
+            board.rotateCurrentBlockClockwise();
         }
-        if(controller.left()) {
-            System.out.println("LEFT");
+        if(controller.left() && left <= 0) {
+            left = 10;
+            board.rotateCurrentBlockCounterclockwise();
         }
+        if(right > 0)
+            right--;
+        if(left > 0)
+            left--;
         if(controller.action()) {
             System.out.println("ACTION");
+        }
+        if(tick <= 0) {
+            tick = 60;
+            board.tick();
+        } else {
+            tick--;
         }
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         board.render(shapeRenderer);

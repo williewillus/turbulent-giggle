@@ -39,6 +39,7 @@ public class Piece {
                 newPiece[y][x] = piece[piece.length - x - 1][y];
             }
         }
+        piece = newPiece;
     }
     public void rotateCounterclockwise()
     {
@@ -50,6 +51,7 @@ public class Piece {
                 newPiece[y][x] = piece[x][piece[0].length - y - 1];
             }
         }
+        piece = newPiece;
     }
     public boolean getPointAt(int x, int y)
     {

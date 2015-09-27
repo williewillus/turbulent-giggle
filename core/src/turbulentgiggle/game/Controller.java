@@ -79,7 +79,7 @@ public class Controller extends AbstractDeviceListener {
 
     }
 
-    private static double SENSITIVITY = 0.75;
+    private static double SENSITIVITY = 1;
 
     public boolean left() {
 //        System.out.println(rollW + " " + initRoll);
