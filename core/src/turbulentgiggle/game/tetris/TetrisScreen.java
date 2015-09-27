@@ -23,10 +23,6 @@ public class TetrisScreen extends CScreen {
     public void show() {
         Gdx.gl.glClearColor(0f,0f,0f,1f);
         board = new TetrisBoard(100, 0, 10, 15);
-        board.setPosition(new Point(1,0), Color.YELLOW);
-        board.setPosition(new Point(1,1), Color.RED);
-        board.setPosition(new Point(1,2), Color.BLUE);
-        board.setPosition(new Point(1,3), Color.GREEN);
     }
 
     @Override
