@@ -133,7 +133,7 @@ public class TetrisBoard {
 
         }
     }
-    public void tick()
+    public boolean tick()
     {
         Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
         currentPiece.currentPosition.setY(currentPiece.currentPosition.getY() - 1);
@@ -146,7 +146,9 @@ public class TetrisBoard {
             }
             dropRows();
             addPiece((new String[] {"O", "I", "S", "Z", "J", "T", "L"})[(int)(Math.random() * 7)]);
+            return true;
         }
+        return false;
     }
     public void render(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.WHITE);
@@ -169,14 +171,19 @@ public class TetrisBoard {
     public void rotateCurrentBlockClockwise()
     {
         currentPiece.rotateClockwise();
+        fixOffset();
 
     }
 
     public void rotateCurrentBlockCounterclockwise()
     {
         currentPiece.rotateCounterclockwise();
+        fixOffset();
     }
-
+    public void drop()
+    {
+        while (!tick());
+    }
     // This method sucks but it should work
     private void fixOffset()
     {
