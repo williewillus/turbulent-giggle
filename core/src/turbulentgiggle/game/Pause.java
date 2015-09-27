@@ -31,7 +31,7 @@ public class Pause {
     public boolean render(Controller controller, SpriteBatch batch, ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.DARK_GRAY);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.rect((Gdx.graphics.getWidth() - paused.width)/2 - 30, (Gdx.graphics.getHeight() - paused.height)/2 - 150, paused.width + 50, paused.height + 170);
+        shapeRenderer.rect((Gdx.graphics.getWidth() - paused.width)/2 - 40, (Gdx.graphics.getHeight() - paused.height)/2 - 150, paused.width + 70, paused.height + 170);
         shapeRenderer.end();
         batch.begin();
         font.draw(batch, paused, (Gdx.graphics.getWidth() - paused.width)/2, (Gdx.graphics.getHeight() - paused.height)/2 + 20);

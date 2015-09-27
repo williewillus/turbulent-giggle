@@ -77,10 +77,14 @@ public class TetrisScreen extends CScreen {
             if (action > 0) {
                 action--;
             }
-            if (controller.action()) {
+            if (controller.down()) {
                 speedUp = true;
             } else {
                 speedUp = false;
+            }
+            if(controller.action() && action <= 0) {
+                board.drop();
+                action = DELAY;
             }
             if (controller.action2() && action2 <= 0) {
                 board.hold();
@@ -103,7 +107,7 @@ public class TetrisScreen extends CScreen {
         if(action3 > 0) {
             action3--;
         }
-        board.render(shapeRenderer);
+        board.render(shapeRenderer, batch);
         batch.begin();
         calcScoreString();
         font.draw(batch, scoreString, 10, 470);
@@ -111,6 +115,7 @@ public class TetrisScreen extends CScreen {
         if (board.isGameover()) {
             if (gameover.render(controller, batch, shapeRenderer)) {
                 board.reset();
+                music.setVolume(1f);
             }
             music.setVolume(music.getVolume() * 0.95f);
         }
@@ -120,6 +125,7 @@ public class TetrisScreen extends CScreen {
         if(paused) {
             paused = pause.render(controller, batch, shapeRenderer);
             action3 = DELAY;
+            music.setVolume(paused ? 0.3f : 1f);
         }
     }
 

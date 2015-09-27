@@ -102,7 +102,7 @@ public class Controller extends AbstractDeviceListener {
     }
 
     public boolean action() {
-        return pitchW - initPitch < -SENSITIVITY*2;//currentPose.getType() == PoseType.WAVE_IN;//currentPose.getType() == PoseType.FIST || currentPose.getType() == PoseType.FINGERS_SPREAD;
+        return pitchW - initPitch < -SENSITIVITY*4;//currentPose.getType() == PoseType.WAVE_IN;//currentPose.getType() == PoseType.FIST || currentPose.getType() == PoseType.FINGERS_SPREAD;
     }
 
     public boolean action2() {

@@ -2,14 +2,13 @@ package turbulentgiggle.game.tetris;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import org.lwjgl.util.Point;
+import turbulentgiggle.game.FadingText;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Quang on 9/26/2015.
@@ -72,6 +71,8 @@ public class TetrisBoard {
 
     private static final int MULTIPLIER = 2;
     private static final int SCORE = 1000;
+
+    private List<FadingText> fadingTexts = new ArrayList<FadingText>();
 
     public boolean isGameover() {
         return gameover;
@@ -180,7 +181,8 @@ public class TetrisBoard {
     private void dropRows()
     {
         int multiplier = 1;
-        for (int y = 0; y < board.length; y++)
+        int yReal = 0;
+        for (int y = 0; y < board.length; y++, yReal++)
         {
             boolean totallyFilled = true;
             for(Color c: board[y])
@@ -194,6 +196,7 @@ public class TetrisBoard {
             if (totallyFilled)
             {
                 score += SCORE * multiplier;
+                fadingTexts.add(new FadingText(String.valueOf(SCORE*MULTIPLIER), xOffset + (float)Math.random()*board[0].length/2, yOffset + (float)yReal * BLOCK_SIZE, 100));
                 multiplier *= MULTIPLIER;
                 for (int k = y; k < board.length - 1; k++ )
                 {
@@ -245,13 +248,13 @@ public class TetrisBoard {
         return ret;
     }
 
-    public void render(ShapeRenderer shapeRenderer) {
+    public void render(ShapeRenderer shapeRenderer, SpriteBatch batch) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for(int y = 0; y < board.length; y++) {
-            for(int x = 0; x < board[y].length; x++) {
-                if(board[y][x] != null) {
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[y].length; x++) {
+                if (board[y][x] != null) {
                     shapeRenderer.setColor(board[y][x]);
-                    shapeRenderer.rect(xOffset + x * BLOCK_SIZE + BLOCK_PAD, yOffset + y * BLOCK_SIZE - BLOCK_PAD, BLOCK_SIZE - BLOCK_PAD*2, BLOCK_SIZE - BLOCK_PAD*2);
+                    shapeRenderer.rect(xOffset + x * BLOCK_SIZE + BLOCK_PAD, yOffset + y * BLOCK_SIZE - BLOCK_PAD, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
                 }
             }
         }
@@ -261,41 +264,47 @@ public class TetrisBoard {
         int width = 0;
 
         int x = currentPiece.getWidth();
-        for(int i = 0; i < currentPiece.getWidth(); i++) {
+        for (int i = 0; i < currentPiece.getWidth(); i++) {
             boolean found = false;
-            for(int j = 0; j < currentPiece.getHeight(); j++) {
-                if(currentPiece.piece[j][i]) {
-                    if(i < x)
+            for (int j = 0; j < currentPiece.getHeight(); j++) {
+                if (currentPiece.piece[j][i]) {
+                    if (i < x)
                         x = i;
-                    if(!found) {
+                    if (!found) {
                         width++;
                         found = true;
                     }
                 }
             }
         }
-        shapeRenderer.rect(xOffset + (currentPiece.currentPosition.getX() + x)*BLOCK_SIZE, yOffset, width*BLOCK_SIZE, board.length*BLOCK_SIZE);
+        shapeRenderer.rect(xOffset + (currentPiece.currentPosition.getX() + x) * BLOCK_SIZE, yOffset, width * BLOCK_SIZE, board.length * BLOCK_SIZE);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board[0].length, BLOCK_SIZE * board.length - 1);
-        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5)/2, Gdx.graphics.getHeight() - 170, BLOCK_SIZE*5, BLOCK_SIZE*5);
-        for(Point point : getPiece(nextBlock).getPoints()) {
+        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2, Gdx.graphics.getHeight() - 170, BLOCK_SIZE * 5, BLOCK_SIZE * 5);
+        for (Point point : getPiece(nextBlock).getPoints()) {
             shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.rect((xOffset - BLOCK_SIZE * 5)/2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE/2, Gdx.graphics.getHeight() - 170 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE/2, BLOCK_SIZE - BLOCK_PAD*2, BLOCK_SIZE - BLOCK_PAD*2);
+            shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, Gdx.graphics.getHeight() - 170 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
         }
 
-        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5)/2, Gdx.graphics.getHeight() - 310, BLOCK_SIZE*5, BLOCK_SIZE*5);
-        if(holdPiece != null) {
+        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2, Gdx.graphics.getHeight() - 310, BLOCK_SIZE * 5, BLOCK_SIZE * 5);
+        if (holdPiece != null) {
             for (Point point : getPiece(holdPiece).getPoints()) {
                 shapeRenderer.setColor(Color.WHITE);
-                shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE/2, Gdx.graphics.getHeight() - 310 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE/2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
+                shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, Gdx.graphics.getHeight() - 310 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
             }
         }
-        for (Point p: currentPiece.getPoints())
-        {
+        for (Point p : currentPiece.getPoints()) {
             shapeRenderer.setColor(currentPiece.color);
-            shapeRenderer.rect(xOffset + p.getX() * BLOCK_SIZE + BLOCK_PAD, yOffset + p.getY() * BLOCK_SIZE + BLOCK_PAD, BLOCK_SIZE - BLOCK_PAD*2, BLOCK_SIZE - BLOCK_PAD*2);
+            shapeRenderer.rect(xOffset + p.getX() * BLOCK_SIZE + BLOCK_PAD, yOffset + p.getY() * BLOCK_SIZE + BLOCK_PAD, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
         }
         shapeRenderer.end();
+        batch.begin();
+        for(int i = fadingTexts.size() - 1; i >= 0; i--) {
+            if(fadingTexts.get(i).render(batch)) {
+                fadingTexts.remove(i);
+            }
+        }
+        batch.end();
     }
 
     public void rotateCurrentBlockClockwise()
