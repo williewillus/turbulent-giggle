@@ -88,20 +88,20 @@ public class Controller extends AbstractDeviceListener {
     private static double SENSITIVITY = 1;
 
     public boolean rotateCounterClockwise() {
-//        System.out.println(rollW + " " + initRoll);
-        return Gdx.input.isButtonPressed(Input.Keys.LEFT) || rollW - avgRoll < -SCALE/2 ? rollW - avgRoll + SCALE > SENSITIVITY : rollW - avgRoll > SENSITIVITY;
+        return rollW - avgRoll < -SCALE/2 ? rollW - avgRoll + SCALE > SENSITIVITY : rollW - avgRoll < SCALE/2 && rollW - avgRoll > SENSITIVITY;
     }
 
     public boolean rotateClockwise() {
-        return Gdx.input.isButtonPressed(Input.Keys.RIGHT) || rollW - avgRoll > SCALE/2 ? rollW - avgRoll - SCALE < -SENSITIVITY : rollW - avgRoll < -SENSITIVITY;
+        return rollW - avgRoll > SCALE/2 ? rollW - avgRoll - SCALE < -SENSITIVITY : rollW - avgRoll > -SCALE/2 && rollW - avgRoll < -SENSITIVITY;
     }
 
     public boolean left() {
-        return yawW - initYaw > 1;
+//        System.out.println(yawW + " " + initYaw);
+        return yawW - initYaw < -SCALE/2 ? yawW - initYaw + SCALE > SENSITIVITY : yawW - initYaw < SCALE/2 && yawW - initYaw > SENSITIVITY;
     }
 
     public boolean right() {
-        return yawW - initYaw < -1;
+        return yawW - initYaw > SCALE/2 ? yawW - initYaw - SCALE < -SENSITIVITY : yawW - initYaw > -SCALE/2 && yawW - initYaw < -SENSITIVITY;
     }
 
     public boolean up() {
@@ -113,7 +113,7 @@ public class Controller extends AbstractDeviceListener {
     }
 
     public boolean action() {
-        return Gdx.input.isButtonPressed(Input.Keys.Z) || pitchW - avgPitch < -SCALE/6;//currentPose.getType() == PoseType.WAVE_IN;//currentPose.getType() == PoseType.FIST || currentPose.getType() == PoseType.FINGERS_SPREAD;
+        return pitchW - avgPitch < -SCALE/6;//currentPose.getType() == PoseType.WAVE_IN;//currentPose.getType() == PoseType.FIST || currentPose.getType() == PoseType.FINGERS_SPREAD;
     }
 
     public boolean action2() {
