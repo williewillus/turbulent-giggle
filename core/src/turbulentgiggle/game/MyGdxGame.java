@@ -15,15 +15,17 @@ public class MyGdxGame extends Game {
     private Myo myo;
     private Controller controller;
 
+    private boolean KEY = false;
+
 	@Override
 	public void create () {
 		ResourceLoader.load();
-        hub = new Hub("Piece.of.Garbage");
-        System.out.println("Attempting to find a Myo...");
-        myo = hub.waitForMyo(1000);
-        if(myo == null) {
+        if(KEY) {
             controller = new KeyController();
         } else {
+            hub = new Hub("Piece.of.Garbage");
+            System.out.println("Attempting to find a Myo...");
+            myo = hub.waitForMyo(1000);
             hub.setLockingPolicy(LockingPolicy.LOCKING_POLICY_NONE);
             System.out.println("Connected to a Myo armband!");
             controller = new Controller(hub);
