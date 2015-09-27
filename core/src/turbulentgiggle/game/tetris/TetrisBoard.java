@@ -104,7 +104,7 @@ public class TetrisBoard {
     public boolean isCurrentLocationValid(Piece p) {
         for(Point point : p.getPoints())
         {
-            if (point.getX() >= board[0].length || point.getY() >= board.length || point.getX() < 0 || point.getY() < 0)
+            if (!validPoint(point))
                 return false;
             if (board[point.getY()][point.getX()] != null)
                 return false;
@@ -230,12 +230,6 @@ public class TetrisBoard {
             allPointsEmpty = true;
             allPointsValid = true;
             for(Point point : currentPiece.getPoints()) {
-                if(point.getX() < leftMost) {
-                    leftMost = point.getX();
-                }
-                if(point.getX() > rightMost) {
-                    rightMost = point.getX();
-                }
                 if(!validPoint(point)) {
                     allPointsValid = false;
                 }

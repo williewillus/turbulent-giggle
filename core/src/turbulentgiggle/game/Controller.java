@@ -97,7 +97,6 @@ public class Controller extends AbstractDeviceListener {
     }
 
     public boolean left() {
-        System.out.println(yawW + " " + initYaw);
         return yawW - initYaw > 1;
     }
 

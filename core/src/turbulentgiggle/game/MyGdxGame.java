@@ -20,14 +20,15 @@ public class MyGdxGame extends Game {
 		ResourceLoader.load();
         hub = new Hub("Piece.of.Garbage");
         System.out.println("Attempting to find a Myo...");
-        myo = hub.waitForMyo(10000);
-        hub.setLockingPolicy(LockingPolicy.LOCKING_POLICY_NONE);
+        myo = hub.waitForMyo(1000);
         if(myo == null) {
-            throw new RuntimeException("No myo's found. SOMETHING WENT REALLY WRONG!");
+            controller = new KeyController();
+        } else {
+            hub.setLockingPolicy(LockingPolicy.LOCKING_POLICY_NONE);
+            System.out.println("Connected to a Myo armband!");
+            controller = new Controller(hub);
+            hub.addListener(controller);
         }
-        System.out.println("Connected to a Myo armband!");
-        controller = new Controller(hub);
-        hub.addListener(controller);
         menuScreen = new MenuScreen(this, controller);
         gameScreen = new GameScreen(this, controller);
         tetrisScreen = new TetrisScreen(this, controller);

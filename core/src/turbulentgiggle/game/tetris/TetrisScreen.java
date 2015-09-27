@@ -23,7 +23,7 @@ public class TetrisScreen extends CScreen {
         board = new TetrisBoard(100, 0, 10, 15);
     }
 
-    private int rotClockwise = DELAY, rotCounterClockwise = DELAY, left = DELAY, right = DELAY;
+    private int rotClockwise = DELAY, rotCounterClockwise = DELAY, left = DELAY, right = DELAY, action = DELAY;
     private int tick = TICK;
     private static final int TICK = 20;
     private static final int DELAY = 10;
@@ -58,8 +58,12 @@ public class TetrisScreen extends CScreen {
         if(right > 0) {
             right--;
         }
-        if(controller.action()) {
-            System.out.println("ACTION");
+        if(action > 0) {
+            action--;
+        }
+        if(controller.action() && action <= 0) {
+            board.drop();
+            action = DELAY;
         }
         if(tick <= 0) {
             tick = TICK;
