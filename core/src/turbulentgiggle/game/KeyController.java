@@ -13,6 +13,11 @@ public class KeyController extends Controller {
     }
 
     @Override
+    public void poll() {
+
+    }
+
+    @Override
     public boolean left() {
         return Gdx.input.isKeyPressed(Input.Keys.A);
     }
@@ -20,6 +25,26 @@ public class KeyController extends Controller {
     @Override
     public boolean right() {
         return Gdx.input.isKeyPressed(Input.Keys.D);
+    }
+
+    @Override
+    public boolean up() {
+        return Gdx.input.isKeyPressed(Input.Keys.W);
+    }
+
+    @Override
+    public boolean down() {
+        return Gdx.input.isKeyPressed(Input.Keys.S);
+    }
+
+    @Override
+    public boolean action2() {
+        return Gdx.input.isKeyPressed(Input.Keys.NUM_1);
+    }
+
+    @Override
+    public boolean action3() {
+        return Gdx.input.isKeyPressed(Input.Keys.NUM_2);
     }
 
     @Override
@@ -34,6 +59,6 @@ public class KeyController extends Controller {
 
     @Override
     public boolean action() {
-        return Gdx.input.isKeyPressed(Input.Keys.S);
+        return Gdx.input.isKeyPressed(Input.Keys.SPACE);
     }
 }

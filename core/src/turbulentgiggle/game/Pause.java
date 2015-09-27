@@ -31,12 +31,12 @@ public class Pause {
     public boolean render(Controller controller, SpriteBatch batch, ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.DARK_GRAY);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.rect((Gdx.graphics.getWidth() - paused.width)/2 - 40, (Gdx.graphics.getHeight() - paused.height)/2 - 150, paused.width + 70, paused.height + 170);
+        shapeRenderer.rect((Constants.WIDTH - paused.width)/2 - 32, (Constants.HEIGHT - paused.height)/2 - 90, paused.width + 60, paused.height + 110);
         shapeRenderer.end();
         batch.begin();
-        font.draw(batch, paused, (Gdx.graphics.getWidth() - paused.width)/2, (Gdx.graphics.getHeight() - paused.height)/2 + 20);
-        fontSmall.draw(batch, options, (Gdx.graphics.getWidth() - options.width)/2,(Gdx.graphics.getHeight() - options.height)/2);
-        fontSmall.draw(batch, arrow, (Gdx.graphics.getWidth() - options.width)/2 - 20, (Gdx.graphics.getHeight() - options.height)/2 - curOption * fontSmall.getLineHeight());
+        font.draw(batch, paused, (Constants.WIDTH - paused.width)/2, (Constants.HEIGHT - paused.height)/2 + 20);
+        fontSmall.draw(batch, options, (Constants.WIDTH - options.width)/2,(Constants.HEIGHT - options.height)/2);
+        fontSmall.draw(batch, arrow, (Constants.WIDTH - options.width)/2 - 20, (Constants.HEIGHT - options.height)/2 - curOption * fontSmall.getLineHeight());
         batch.end();
         if(controller.up() && up <= 0) {
             up = DELAY;

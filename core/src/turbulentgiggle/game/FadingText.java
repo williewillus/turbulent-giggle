@@ -28,11 +28,11 @@ public class FadingText {
 
     public boolean render(SpriteBatch batch) {
         curFrame++;
-        color.a = (float)(frames-curFrame)/frames;
+        color.a = ((float)(frames-curFrame))/frames;
         font.setColor(color);
-        font.draw(batch, text, (float)(x + Math.cos(curFrame/(double)frames * 6 * Math.PI)) * 10, y + curFrame/(float)frames * 50);
+        font.draw(batch, text, x + (float)(Math.cos(curFrame/(double)frames * 4 * Math.PI)) * 20, y + curFrame/(float)frames * 80);
         font.setColor(Color.WHITE);
-        return frames >= curFrame;
+        return frames <= curFrame;
     }
 
 }

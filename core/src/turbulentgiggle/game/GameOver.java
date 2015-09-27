@@ -31,12 +31,12 @@ public class GameOver {
     public boolean render(Controller controller, SpriteBatch batch, ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(color);
-        shapeRenderer.rect((Gdx.graphics.getWidth() - gameover.width)/2 - 40, (Gdx.graphics.getHeight() - gameover.height)/2 - 10, gameover.width + 80, gameover.height + 60);
+        shapeRenderer.rect((Constants.WIDTH - gameover.width)/2 - 40, (Constants.HEIGHT - gameover.height)/2 - 10, gameover.width + 80, gameover.height + 60);
         shapeRenderer.end();
         batch.begin();
-        font.draw(batch, gameover, Gdx.graphics.getWidth()/2 - gameover.width/2 - 40, Gdx.graphics.getHeight()/2 - gameover.height/2 + 80);
-        fontSmall.draw(batch, responses, Gdx.graphics.getWidth()/2 - responses.width/2, Gdx.graphics.getHeight()/2 - gameover.height/2 + 20);
-        fontSmall.draw(batch, arrow, Gdx.graphics.getWidth()/2 - responses.width/2 - 30 + (startover ? 0 : 120), Gdx.graphics.getHeight()/2 - gameover.height/2 + 20);
+        font.draw(batch, gameover, Constants.WIDTH/2 - gameover.width/2 - 40, Constants.HEIGHT/2 - gameover.height/2 + 80);
+        fontSmall.draw(batch, responses, Constants.WIDTH/2 - responses.width/2, Constants.HEIGHT/2 - gameover.height/2 + 20);
+        fontSmall.draw(batch, arrow, Constants.WIDTH/2 - responses.width/2 - 30 + (startover ? 0 : 120), Constants.HEIGHT/2 - gameover.height/2 + 20);
         batch.end();
         if((controller.left() || controller.right()) && startoverTimer <= 0) {
             startover = !startover;

@@ -15,7 +15,7 @@ public class MyGdxGame extends Game {
     private Myo myo;
     private Controller controller;
 
-    private boolean KEY = false;
+    private boolean KEY = true;
 
 	@Override
 	public void create () {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import org.lwjgl.util.Point;
+import turbulentgiggle.game.Constants;
 import turbulentgiggle.game.FadingText;
 
 import java.util.*;
@@ -196,7 +197,7 @@ public class TetrisBoard {
             if (totallyFilled)
             {
                 score += SCORE * multiplier;
-                fadingTexts.add(new FadingText(String.valueOf(SCORE*MULTIPLIER), xOffset + (float)Math.random()*board[0].length/2, yOffset + (float)yReal * BLOCK_SIZE, 100));
+                fadingTexts.add(new FadingText("+" + String.valueOf(SCORE*multiplier), xOffset + (float)Math.random()*board[0].length/2*BLOCK_SIZE, yOffset + (float)yReal * BLOCK_SIZE, 100));
                 multiplier *= MULTIPLIER;
                 for (int k = y; k < board.length - 1; k++ )
                 {
@@ -280,17 +281,17 @@ public class TetrisBoard {
         shapeRenderer.rect(xOffset + (currentPiece.currentPosition.getX() + x) * BLOCK_SIZE, yOffset, width * BLOCK_SIZE, board.length * BLOCK_SIZE);
         shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board[0].length, BLOCK_SIZE * board.length - 1);
-        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2, Gdx.graphics.getHeight() - 170, BLOCK_SIZE * 5, BLOCK_SIZE * 5);
+        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2, Constants.HEIGHT - 170, BLOCK_SIZE * 5, BLOCK_SIZE * 5);
         for (Point point : getPiece(nextBlock).getPoints()) {
             shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, Gdx.graphics.getHeight() - 170 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
+            shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, Constants.HEIGHT - 170 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
         }
 
-        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2, Gdx.graphics.getHeight() - 310, BLOCK_SIZE * 5, BLOCK_SIZE * 5);
+        shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2, Constants.HEIGHT - 310, BLOCK_SIZE * 5, BLOCK_SIZE * 5);
         if (holdPiece != null) {
             for (Point point : getPiece(holdPiece).getPoints()) {
                 shapeRenderer.setColor(Color.WHITE);
-                shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, Gdx.graphics.getHeight() - 310 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
+                shapeRenderer.rect((xOffset - BLOCK_SIZE * 5) / 2 + point.getX() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, Constants.HEIGHT - 310 + point.getY() * BLOCK_SIZE + BLOCK_PAD + BLOCK_SIZE / 2, BLOCK_SIZE - BLOCK_PAD * 2, BLOCK_SIZE - BLOCK_PAD * 2);
             }
         }
         for (Point p : currentPiece.getPoints()) {

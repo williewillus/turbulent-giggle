@@ -25,7 +25,7 @@ public abstract class CScreen implements Screen {
         this.controller = controller;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Constants.WIDTH, Constants.HEIGHT);
         shapeRenderer = new ShapeRenderer();
     }
 
