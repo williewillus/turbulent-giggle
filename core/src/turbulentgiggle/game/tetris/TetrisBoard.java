@@ -126,7 +126,7 @@ public class TetrisBoard {
             }
             if (totallyFilled)
             {
-                for (int k = y; k < board.length; k++ )
+                for (int k = y; k < board.length - 1; k++ )
                 {
                     board[k] = board[k+1];
                 }
