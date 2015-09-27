@@ -167,11 +167,37 @@ public class TetrisBoard {
     public void rotateCurrentBlockClockwise()
     {
         currentPiece.rotateClockwise();
+
     }
 
     public void rotateCurrentBlockCounterclockwise()
     {
         currentPiece.rotateCounterclockwise();
+    }
+
+    // This method sucks but it should work
+    private void fixOffset()
+    {
+        if (isCurrentLocationValid(currentPiece))
+        {
+            return;
+        }
+        Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
+        double shortestDistance = Double.MAX_VALUE;
+        Point optimalPosition = oldPosition;
+        for (int y = 0; y < board.length; y++)
+        {
+            for (int x = 0; x < board[0].length; x++)
+            {
+                currentPiece.currentPosition = new Point(x,y);
+                if (isCurrentLocationValid(currentPiece) && Math.sqrt((y-oldPosition.getY())^2+(x-oldPosition.getX())^2) < shortestDistance)
+                {
+                    shortestDistance = Math.sqrt((y-oldPosition.getY())^2+(x-oldPosition.getX())^2);
+                    optimalPosition = new Point(x,y);
+                }
+            }
+        }
+        currentPiece.currentPosition = optimalPosition;
     }
 
 }
