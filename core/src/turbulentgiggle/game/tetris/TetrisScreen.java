@@ -2,9 +2,6 @@ package turbulentgiggle.game.tetris;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import org.lwjgl.util.Point;
 import turbulentgiggle.game.CScreen;
 import turbulentgiggle.game.Controller;
 
@@ -26,37 +23,51 @@ public class TetrisScreen extends CScreen {
         board = new TetrisBoard(100, 0, 10, 15);
     }
 
-    private int right = 0, left = 0;
-    private int tick = 60;
+    private int rotClockwise = DELAY, rotCounterClockwise = DELAY, left = DELAY, right = DELAY;
+    private int tick = TICK;
+    private static final int TICK = 20;
+    private static final int DELAY = 10;
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
         controller.poll();
-        if(controller.right() && right <= 0) {
-            right = 10;
+        if(controller.rotateClockwise() && rotClockwise <= 0) {
+            rotClockwise = DELAY;
             board.rotateCurrentBlockClockwise();
         }
-        if(controller.left() && left <= 0) {
-            left = 10;
+        if(controller.rotateCounterClockwise() && rotCounterClockwise <= 0) {
+            rotCounterClockwise = DELAY;
             board.rotateCurrentBlockCounterclockwise();
         }
-        if(right > 0)
-            right--;
-        if(left > 0)
+        if(controller.left() && left <= 0) {
+            left = DELAY;
+            board.moveLeft();
+        }
+        if(controller.right() && right <= 0) {
+            right = DELAY;
+            board.moveRight();
+        }
+        if(rotClockwise > 0)
+            rotClockwise--;
+        if(rotCounterClockwise > 0)
+            rotCounterClockwise--;
+        if(left > 0) {
             left--;
+        }
+        if(right > 0) {
+            right--;
+        }
         if(controller.action()) {
             System.out.println("ACTION");
         }
         if(tick <= 0) {
-            tick = 10;
+            tick = TICK;
             board.tick();
         } else {
             tick--;
         }
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         board.render(shapeRenderer);
-        shapeRenderer.end();
     }
 
     @Override

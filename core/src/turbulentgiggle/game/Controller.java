@@ -61,6 +61,12 @@ public class Controller extends AbstractDeviceListener {
         this.pitch.add(pitchW);
         this.roll.add(rollW);
         this.yaw.add(yawW);
+        if(!set) {
+            initRoll = rollW;
+            initYaw = yawW;
+            initPitch = pitchW;
+            set = true;
+        }
         if(this.pitch.size() > BUFFER_SIZE) {
             avgPitch = (avgPitch * BUFFER_SIZE - this.pitch.removeFirst() + pitchW)/BUFFER_SIZE;
             avgRoll = (avgRoll * BUFFER_SIZE - this.roll.removeFirst() + rollW)/BUFFER_SIZE;
@@ -81,13 +87,22 @@ public class Controller extends AbstractDeviceListener {
 
     private static double SENSITIVITY = 1;
 
-    public boolean left() {
+    public boolean rotateCounterClockwise() {
 //        System.out.println(rollW + " " + initRoll);
         return Gdx.input.isButtonPressed(Input.Keys.LEFT) || rollW - avgRoll < -SCALE/2 ? rollW - avgRoll + SCALE > SENSITIVITY : rollW - avgRoll > SENSITIVITY;
     }
 
-    public boolean right() {
+    public boolean rotateClockwise() {
         return Gdx.input.isButtonPressed(Input.Keys.RIGHT) || rollW - avgRoll > SCALE/2 ? rollW - avgRoll - SCALE < -SENSITIVITY : rollW - avgRoll < -SENSITIVITY;
+    }
+
+    public boolean left() {
+        System.out.println(yawW + " " + initYaw);
+        return yawW - initYaw > 1;
+    }
+
+    public boolean right() {
+        return yawW - initYaw < -1;
     }
 
     public boolean up() {

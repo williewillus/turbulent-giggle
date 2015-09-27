@@ -16,6 +16,9 @@ public class TetrisBoard {
     private int xOffset, yOffset;
     private static final int BLOCK_SIZE = 32;
     private Piece currentPiece;
+    private static final int CLOCKWISE = 1;
+    private static final int COUNTERCLOCKWISE = 2;
+
     private HashMap<String, Piece> pieceDefinitions = new HashMap<String, Piece>()
         {{
             put("O", new Piece(Color.YELLOW, new boolean[][]
@@ -72,7 +75,7 @@ public class TetrisBoard {
     public void addPiece(String type)
     {
         currentPiece = pieceDefinitions.get(type);
-        currentPiece.currentPosition = new Point(board[0].length/2, board.length - 1);
+        currentPiece.currentPosition = new Point(board[0].length/2, board.length - 3);
     }
     public boolean moveRight()
     {
@@ -101,7 +104,7 @@ public class TetrisBoard {
     public boolean isCurrentLocationValid(Piece p) {
         for(Point point : p.getPoints())
         {
-            if (point.getX() > board[0].length || point.getY() > board.length || point.getX() < 0 || point.getY() < 0)
+            if (point.getX() >= board[0].length || point.getY() >= board.length || point.getX() < 0 || point.getY() < 0)
                 return false;
             if (board[point.getY()][point.getX()] != null)
                 return false;
@@ -145,17 +148,14 @@ public class TetrisBoard {
                 board[point.getY()]
                         [point.getX()] = currentPiece.color;
             }
-            System.out.println(1);
             dropRows();
-            System.out.println(2);
             addPiece((new String[] {"O", "I", "S", "Z", "J", "T", "L"})[(int)(Math.random() * 7)]);
             return true;
         }
         return false;
     }
     public void render(ShapeRenderer shapeRenderer) {
-        shapeRenderer.setColor(Color.WHITE);
-        shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board[0].length, BLOCK_SIZE * board.length - 1);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for(int y = 0; y < board.length; y++) {
             for(int x = 0; x < board[y].length; x++) {
                 if(board[y][x] != null) {
@@ -164,52 +164,133 @@ public class TetrisBoard {
                 }
             }
         }
+        shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.rect(xOffset, yOffset, BLOCK_SIZE * board[0].length, BLOCK_SIZE * board.length - 1);
         for (Point p: currentPiece.getPoints())
         {
             shapeRenderer.setColor(currentPiece.color);
             shapeRenderer.rect(xOffset + p.getX() * 32 + 2, yOffset + p.getY() * 32 + 2, 28, 28);
         }
+        shapeRenderer.end();
     }
 
     public void rotateCurrentBlockClockwise()
     {
-        currentPiece.rotateClockwise();
+        rotate(true);
+//        currentPiece.rotateClockwise();
         fixOffset();
 
     }
 
     public void rotateCurrentBlockCounterclockwise()
     {
-        currentPiece.rotateCounterclockwise();
+        rotate(false);
+//        currentPiece.rotateCounterclockwise();
         fixOffset();
     }
     public void drop()
     {
         while (!tick());
     }
-    // This method sucks but it should work
-    private void fixOffset()
-    {
-        if (isCurrentLocationValid(currentPiece))
-        {
-            return;
+
+    public void rotate(boolean clockwise) {
+        if(clockwise) {
+            currentPiece.rotateClockwise();
+        } else {
+            currentPiece.rotateCounterclockwise();
         }
-        Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
-        double shortestDistance = Double.MAX_VALUE;
-        Point optimalPosition = oldPosition;
-        for (int y = 0; y < board.length; y++)
-        {
-            for (int x = 0; x < board[0].length; x++)
-            {
-                currentPiece.currentPosition = new Point(x,y);
-                if (isCurrentLocationValid(currentPiece) && Math.sqrt((y-oldPosition.getY())^2+(x-oldPosition.getX())^2) < shortestDistance)
-                {
-                    shortestDistance = Math.sqrt((y-oldPosition.getY())^2+(x-oldPosition.getX())^2);
-                    optimalPosition = new Point(x,y);
+        boolean allPointsValid = true, allPointsEmpty = true;
+        int leftMost = Integer.MAX_VALUE;
+        int rightMost = Integer.MIN_VALUE;
+        for(Point point : currentPiece.getPoints()) {
+            if(point.getX() < leftMost) {
+                leftMost = point.getX();
+            }
+            if(point.getX() > rightMost) {
+                rightMost = point.getX();
+            }
+            if(!validPoint(point)) {
+                allPointsValid = false;
+            }
+            if(validPoint(point) && board[point.getY()][point.getX()] != null) {
+                allPointsEmpty = false;
+            }
+        }
+        if(allPointsEmpty && allPointsValid) {
+            return;
+        } if(!allPointsValid) {
+            if(leftMost < 0) {
+                currentPiece.currentPosition.translate(-leftMost, 0);
+            }
+            if(rightMost >= board[0].length) {
+                currentPiece.currentPosition.translate(-(rightMost - (board.length - 1)), 0);
+            }
+            allPointsEmpty = true;
+            allPointsValid = true;
+            for(Point point : currentPiece.getPoints()) {
+                if(point.getX() < leftMost) {
+                    leftMost = point.getX();
+                }
+                if(point.getX() > rightMost) {
+                    rightMost = point.getX();
+                }
+                if(!validPoint(point)) {
+                    allPointsValid = false;
+                }
+                if(validPoint(point) && board[point.getY()][point.getX()] != null) {
+                    allPointsEmpty = false;
+                }
+            }
+            if(allPointsEmpty && allPointsValid) {
+                return;
+            } else {
+                if(leftMost < 0) {
+                    currentPiece.currentPosition.translate(leftMost, 0);
+                }
+                if(rightMost >= board[0].length) {
+                    currentPiece.currentPosition.translate(rightMost - (board[0].length - 1), 0);
+                }
+                if(clockwise) {
+                    currentPiece.rotateCounterclockwise();
+                } else {
+                    currentPiece.rotateClockwise();
                 }
             }
         }
-        currentPiece.currentPosition = optimalPosition;
     }
+
+    public boolean validPoint(Point point) {
+        return point.getX() >= 0 && point.getX() < board[0].length && point.getY() >= 0 && point.getY() < board.length;
+    }
+
+    public void fixOffset() {
+
+    }
+//    // This method sucks but it should work
+//    private void fixOffset()
+//    {
+//        if (isCurrentLocationValid(currentPiece))
+//        {
+//            return;
+//        }
+//        Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
+//        double shortestDistance = Double.MAX_VALUE;
+//        Point optimalPosition = oldPosition;
+//        for (int y = 0; y < board.length; y++)
+//        {
+//            for (int x = 0; x < board[0].length; x++)
+//            {
+//                currentPiece.currentPosition = new Point(x,y);
+//                if (isCurrentLocationValid(currentPiece) && Math.sqrt((y-oldPosition.getY())^2+(x-oldPosition.getX())^2) < shortestDistance)
+//                {
+//                    shortestDistance = Math.sqrt((y-oldPosition.getY())^2+(x-oldPosition.getX())^2);
+//                    optimalPosition = new Point(x,y);
+//                }
+//            }
+//        }
+//        currentPiece.currentPosition = optimalPosition;
+//    }
 
 }
