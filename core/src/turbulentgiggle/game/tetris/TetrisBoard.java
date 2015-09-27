@@ -68,6 +68,11 @@ public class TetrisBoard {
         this.yOffset = yOffset;
     }
 
+    public void addPiece(String type)
+    {
+        currentPiece = pieceDefinitions.get(type);
+        currentPiece.currentPosition = new Point(board[0].length/2, 0);
+    }
     public boolean moveRight()
     {
         Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
@@ -129,6 +134,7 @@ public class TetrisBoard {
     public void tick()
     {
         Point oldPosition = new Point(currentPiece.currentPosition.getX(), currentPiece.currentPosition.getY());
+        currentPiece.currentPosition.setY(currentPiece.currentPosition.getY() + 1);
         if (!isCurrentLocationValid(currentPiece))
         {
             currentPiece.currentPosition = oldPosition;
@@ -137,9 +143,7 @@ public class TetrisBoard {
                 board[point.getY()][point.getX()] = currentPiece.color;
             }
             dropRows();
-        }
-        else {
-            currentPiece.currentPosition.setY(currentPiece.currentPosition.getY() + 1);
+            addPiece((new String[] {"O", "I", "S", "Z", "J", "T", "L"})[(int)(Math.random() * 7)]);
         }
     }
     public void render(ShapeRenderer shapeRenderer) {
